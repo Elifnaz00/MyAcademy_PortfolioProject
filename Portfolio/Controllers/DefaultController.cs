@@ -2,7 +2,7 @@
 
 namespace Portfolio.Controllers
 {
-    public class CategoryController : Controller
+    public class DefaultController : Controller
     {
         public IActionResult Index()
         {

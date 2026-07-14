@@ -1,0 +1,27 @@
+﻿@model List<ProjectTechStack>   
+@{
+    ViewData["Title"] = "Proje Teknolojileri";
+    Layout = "~/Views/AdminLayout/Layout.cshtml";
+	int count = 0;
+}
+
+<table class="table table-bordered table-hover">
+        <tr>
+            <th>#</th>
+            <th>Proje Adı</th>
+            <th>Kullanılan Teknolojiler</th>
+        </tr>
+  
+    <tbody>
+        @foreach (var item in Model)
+        {
+            count++;
+            <tr>
+               <td>count</td>
+               <td>@item.Project.Name</td>
+               <td>@item.TechStack.Name</td>
+            </tr>
+        }
+	</tbody>
+ </table>
+ <a class="btn btn-outline-dark" href="/ProjectTechStacks/Create">Yeni Giriş</a>

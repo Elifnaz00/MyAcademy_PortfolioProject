@@ -1,0 +1,27 @@
+﻿@model About
+@{
+    ViewData["Title"] = "UpdateAbout";
+    Layout = "~/Views/AdminLayout/Layout.cshtml";
+}
+
+<form method="post">
+    <input type="hidden" asp-for="Id"/>
+
+
+    <label>Başlık</label>
+    <input type="text" asp-for="Title" class="form-control" value="@Model.Title" required>
+    <br />
+
+    <label>Description</label>
+    <textarea asp-for="Description" class="form-control" value="@Model.Description" required></textarea>
+    <br />
+
+    <label>Görsel Url</label>
+    <input type="text" asp-for="ImageUrl" class="form-control" value="@Model.ImageUrl" required>
+    <br />
+
+    <button type="submit" class="btn btn-outline-dark">Güncelle</button>
+
+</form>
+
+
