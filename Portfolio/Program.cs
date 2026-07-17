@@ -1,4 +1,10 @@
+
+using AutoMapper;
+using Microsoft.Extensions.DependencyInjection;
 using Portfolio.Data.Context;
+using System.Reflection;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,7 +12,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>();
 builder.Services.AddControllersWithViews();
 
-var app = builder.Build();
+
+
+var app = builder.Build();      
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

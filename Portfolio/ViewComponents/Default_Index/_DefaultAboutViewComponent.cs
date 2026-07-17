@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿
+using Microsoft.AspNetCore.Mvc;
 using Portfolio.Data.Context;
 
 namespace Portfolio.ViewComponents.Default_Index
@@ -7,14 +8,16 @@ namespace Portfolio.ViewComponents.Default_Index
     {
         private readonly AppDbContext _context;
 
+
         public _DefaultAboutViewComponent(AppDbContext context)
         {
             _context = context;
         }
 
-        public IViewComponentResult Invoke()
+ 
+        public async Task<IViewComponentResult> InvokeAsync()
         {
-            var aboutList= _context.Abouts.ToList();
+            var aboutList = await Task.FromResult(_context.Abouts.ToList());
             return View(aboutList);
         }
     }

@@ -1,0 +1,30 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const slider = document.getElementById('slider-container');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+
+        if(slider && prevBtn && nextBtn) {
+            const getScrollAmount = () => {
+                const card = slider.querySelector('.snap-center');
+                if (!card) return 0;
+                const cardWidth = card.offsetWidth;
+                const gap = parseFloat(getComputedStyle(slider).gap) || 0;
+                return cardWidth + gap;
+            };
+
+            prevBtn.addEventListener('click', () => {
+                slider.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+            });
+
+            nextBtn.addEventListener('click', () => {
+                slider.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+            });
+        }
+    });
+</script>

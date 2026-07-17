@@ -46,6 +46,7 @@ namespace Portfolio.Controllers
         }
 
 
+
         [HttpPost]
         public IActionResult UpdateAbout(About about)
         {

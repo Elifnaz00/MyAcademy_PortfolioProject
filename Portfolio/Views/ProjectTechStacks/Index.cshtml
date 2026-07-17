@@ -1,27 +1,36 @@
-﻿@model List<ProjectTechStack>   
+﻿@using Portfolio.Models.ProjectStack
+@model List<ProjectStackListViewModel>
 @{
     ViewData["Title"] = "Proje Teknolojileri";
     Layout = "~/Views/AdminLayout/Layout.cshtml";
 	int count = 0;
 }
 
+@*BU SAYFADAKİ TABLOYU SEN OLUŞTURACAKSIN TABLODA PROJELER LİSTELENİRKEN YANINDAKİ SÜTUNDA DA PROJEDE KULLANILAN TEKNOLOJİLER ARALARINA VİRGÜL KONULARAK YAN YANA SIRALANMIŞ OLACAK TEK SUTÜNDA.*@
+
 <table class="table table-bordered table-hover">
+    <tr>
+        <th>#</th>
+        <th>Proje Adı</th>
+        <th>Kullanılan Teknolojiler</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        count++;
         <tr>
-            <th>#</th>
-            <th>Proje Adı</th>
-            <th>Kullanılan Teknolojiler</th>
+            <td>@count</td>
+            <td>@item.ProjectName</td>
+           
+                <td>
+                    @foreach (var tech in item.TechStackNames)
+                        @tech,
+                        
+                </td>
+			
         </tr>
-  
-    <tbody>
-        @foreach (var item in Model)
-        {
-            count++;
-            <tr>
-               <td>count</td>
-               <td>@item.Project.Name</td>
-               <td>@item.TechStack.Name</td>
-            </tr>
-        }
-	</tbody>
- </table>
- <a class="btn btn-outline-dark" href="/ProjectTechStacks/Create">Yeni Giriş</a>
+    }
+
+</table>
+
+<a class="btn btn-outline-dark" href="/ProjectTechStacks/Create">Yeni Giriş</a>

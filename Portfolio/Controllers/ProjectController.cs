@@ -27,6 +27,7 @@ namespace Portfolio.Controllers
         }
 
 
+
         [HttpPost]
         public IActionResult CreateProject(Project project)
         {
@@ -34,10 +35,12 @@ namespace Portfolio.Controllers
             {
                 return View(project);
             }
-            var projectList = _context.Projects.Add(project);
+            _context.Projects.Add(project);
             _context.SaveChanges();
-            return RedirectToAction("Index","Project");
+            return RedirectToAction("Index", "Project");
         }
+
+
 
 
         [HttpGet]
@@ -46,6 +49,8 @@ namespace Portfolio.Controllers
             var project= _context.Projects.Find(id);
             return View(project);
         }
+
+
 
 
         [HttpPost]
@@ -61,6 +66,8 @@ namespace Portfolio.Controllers
         }
 
        
+
+
         public IActionResult DeleteProject(int id)
         {
             var project = _context.Projects.Find(id);

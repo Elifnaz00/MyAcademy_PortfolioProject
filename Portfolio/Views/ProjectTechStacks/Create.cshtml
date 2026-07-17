@@ -3,7 +3,7 @@
     ViewData["Title"] = "Proje Teknolojilerini Oluştur";
     Layout = "~/Views/AdminLayout/Layout.cshtml";
 }
-
+@*PROJEYE TEKNOLOJİ EKLEME SAYFASI OLDUGU İÇİN PROJE EKLERKEN TEKNOLOJİSİ ÇOKLU SEÇİLEBİLSİN. ONU EKLE.*@
 <form method="post" asp-action="Create" asp-controller="ProjectTechStacks">
 	<label> Proje</label>
     <select class="form-control" asp-for="ProjectId" asp-items="@ViewBag.Projects">
