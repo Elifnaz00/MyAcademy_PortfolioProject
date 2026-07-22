@@ -6,7 +6,7 @@
 	int count = 0;
 }
 
-@*BU SAYFADAKİ TABLOYU SEN OLUŞTURACAKSIN TABLODA PROJELER LİSTELENİRKEN YANINDAKİ SÜTUNDA DA PROJEDE KULLANILAN TEKNOLOJİLER ARALARINA VİRGÜL KONULARAK YAN YANA SIRALANMIŞ OLACAK TEK SUTÜNDA.*@
+
 
 <table class="table table-bordered table-hover">
     <tr>
@@ -24,7 +24,7 @@
            
                 <td>
                     @foreach (var tech in item.TechStackNames)
-                        @tech,
+                        @string.Join("," , @tech),
                         
                 </td>
 			

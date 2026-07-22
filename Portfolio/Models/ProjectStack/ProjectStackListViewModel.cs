@@ -4,5 +4,7 @@
     {
         public string ProjectName { get; set; }
         public List<string> TechStackNames { get; set; }
+
+        public DateTime CreatedAt { get; set; } 
     }
 }

@@ -20,6 +20,7 @@ namespace Portfolio.Data.Entities
         [Required(ErrorMessage = "Github Url boş bırakılamaz.")]
         public string GithubUrl { get; set; }
 
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
         public List<ProjectTechStack> ProjectTechStacks { get; set; }
 
     }

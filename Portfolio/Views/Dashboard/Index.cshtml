@@ -1,0 +1,19 @@
+﻿
+@{
+    Layout = "~/Views/AdminLayout/Layout.cshtml";
+}
+
+<div class="mb-xl">
+    <h1 class="font-h1 text-h1 text-on-surface mb-lg">Proje Yönetimi</h1>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+
+	@await Component.InvokeAsync("_AdminDashboardProjects")
+    @await Component.InvokeAsync("_AdminDashboardExperiances")
+    @await Component.InvokeAsync("_AdminDashboardReceıvedMessages")
+
+</div>
+</div>
+
+@await Component.InvokeAsync("_RecentProjects")
+
+

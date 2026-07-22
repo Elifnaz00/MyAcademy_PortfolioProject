@@ -1,0 +1,170 @@
+﻿
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.js" type="text/javascript"></script>
+<script src="@Url.Content("~/Chosen/chosen.jquery.js")" type="text/javascript"></script>
+
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                  "on-primary-container": "#dad7ff",
+                  "error-container": "#ffdad6",
+                  "primary-container": "#4f46e5",
+                  "surface-container-low": "#eff4ff",
+                  "on-secondary": "#ffffff",
+                  "surface": "#f8f9ff",
+                  "on-tertiary-fixed": "#351000",
+                  "on-error-container": "#93000a",
+                  "on-secondary-container": "#5c647a",
+                  "surface-dim": "#cbdbf5",
+                  "error": "#ba1a1a",
+                  "tertiary-fixed-dim": "#ffb695",
+                  "primary-fixed-dim": "#c3c0ff",
+                  "tertiary": "#7e3000",
+                  "surface-container-highest": "#d3e4fe",
+                  "secondary": "#565e74",
+                  "on-background": "#0b1c30",
+                  "on-tertiary-container": "#ffd2be",
+                  "on-surface-variant": "#464555",
+                  "on-primary": "#ffffff",
+                  "primary-fixed": "#e2dfff",
+                  "secondary-fixed-dim": "#bec6e0",
+                  "inverse-on-surface": "#eaf1ff",
+                  "on-tertiary-fixed-variant": "#7b2f00",
+                  "outline-variant": "#c7c4d8",
+                  "on-error": "#ffffff",
+                  "surface-container-high": "#dce9ff",
+                  "surface-container": "#e5eeff",
+                  "background": "#f8f9ff",
+                  "inverse-surface": "#213145",
+                  "surface-container-lowest": "#ffffff",
+                  "inverse-primary": "#c3c0ff",
+                  "surface-tint": "#4d44e3",
+                  "surface-variant": "#d3e4fe",
+                  "primary": "#3525cd",
+                  "tertiary-container": "#a44100",
+                  "on-surface": "#0b1c30",
+                  "tertiary-fixed": "#ffdbcc",
+                  "secondary-fixed": "#dae2fd",
+                  "on-primary-fixed": "#0f0069",
+                  "on-primary-fixed-variant": "#3323cc",
+                  "on-tertiary": "#ffffff",
+                  "on-secondary-fixed": "#131b2e",
+                  "on-secondary-fixed-variant": "#3f465c",
+                  "secondary-container": "#dae2fd",
+                  "surface-bright": "#f8f9ff",
+                  "outline": "#777587"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.25rem",
+                  "lg": "0.5rem",
+                  "xl": "0.75rem",
+                  "full": "9999px"
+          },
+          "spacing": {
+                  "lg": "24px",
+                  "gutter": "24px",
+                  "margin-desktop": "32px",
+                  "xs": "4px",
+                  "md": "16px",
+                  "unit": "4px",
+                  "margin-mobile": "16px",
+                  "sm": "8px",
+                  "xl": "32px",
+                  "sidebar-width": "260px"
+          },
+          "fontFamily": {
+                  "body-md": ["Inter"],
+                  "h1": ["Inter"],
+                  "h3": ["Inter"],
+                  "label-md": ["Inter"],
+                  "h1-mobile": ["Inter"],
+                  "label-sm": ["Inter"],
+                  "h2": ["Inter"],
+                  "display-sm": ["Inter"],
+                  "body-lg": ["Inter"],
+                  "display-lg": ["Inter"]
+          },
+          "fontSize": {
+                  "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                  "h1": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                  "h3": ["18px", {"lineHeight": "28px", "fontWeight": "600"}],
+                  "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                  "h1-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                  "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                  "h2": ["20px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                  "display-sm": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                  "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                  "display-lg": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+          }
+        },
+      },
+    }
+</script>
+<script>
+ 
+
+    $(document).ready(function () {
+            $(".chzn-select").chosen(
+                {
+                    placeholder_text_multiple: "Projede Kullanılan Teknolojileri Seçiniz"
+                }
+            )
+            
+
+       });
+
+
+    const myModal = document.getElementById('myModal')
+
+
+            myModal.addEventListener('shown.bs.modal', () => {
+
+    })
+
+
+
+
+
+
+
+    // Simple micro-interactions
+    document.querySelectorAll('button, a').forEach(el => {
+        el.addEventListener('mousedown', () => {
+            el.classList.add('opacity-80');
+        });
+        el.addEventListener('mouseup', () => {
+            el.classList.remove('opacity-80');
+        });
+    });
+
+    // Search bar focus effect
+    const searchInput = document.querySelector('input[type="text"]');
+    searchInput.addEventListener('focus', () => {
+        searchInput.parentElement.classList.add('w-80');
+    });
+    searchInput.addEventListener('blur', () => {
+        searchInput.parentElement.classList.remove('w-80');
+    });
+
+            function myDropFunc() {
+      var x = document.getElementById("demoDrop");
+      if (x.className.indexOf("w3-show") == -1) {
+        x.className += " w3-show";
+        x.previousElementSibling.className += " w3-green";
+      } else {
+        x.className = x.className.replace(" w3-show", "");
+        x.previousElementSibling.className =
+        x.previousElementSibling.className.replace(" w3-green", "");
+      }
+    }
+
+</script>

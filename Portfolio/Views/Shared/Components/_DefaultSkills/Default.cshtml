@@ -1,0 +1,22 @@
+﻿@model List<Skill>  
+
+@*
+    Default Skill
+*@
+@{
+}
+
+<div class="grid grid-cols-2 gap-stack-md mt-stack-sm">
+    @foreach(var item in Model)
+    {
+        <div>
+            <h4 class="font-label-sm text-label-sm text-primary mb-1">@item.Name</h4>
+            @foreach(var skill in item.SkillItems)
+            {
+                <p class="font-body-md text-body-md text-on-surface-variant">@skill.Name</p>
+			}
+           
+        </div>
+	}
+
+</div>

@@ -23,5 +23,6 @@ namespace Portfolio.Data.Context
         public DbSet<ProjectTechStack> ProjectTechStacks { get; set; }
         public DbSet<UserMessage> UserMessages { get; set; }
         public DbSet<Admin> Admins { get; set; }
+        public DbSet<SkillItem> SkillItems { get; set; }
     }
 }

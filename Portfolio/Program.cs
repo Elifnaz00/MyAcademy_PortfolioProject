@@ -1,5 +1,7 @@
 
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Portfolio.Data.Context;
 using System.Reflection;
@@ -8,9 +10,29 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+}); 
+
+
+builder.Services.AddAuthentication(
+ CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+{
+    options.Cookie.Name = "PortfolioCookie";
+    options.LoginPath = "/Auth/Login";
+    options.LogoutPath = "/Auth/Logout";
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+    options.SlidingExpiration = true;
+});
+
+
 // Add services to the container.
 builder.Services.AddDbContext<AppDbContext>();
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(opt => opt.Filters.Add(new AuthorizeFilter()));
 
 
 
@@ -28,9 +50,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseSession();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Default}/{action=Index}/{id?}");

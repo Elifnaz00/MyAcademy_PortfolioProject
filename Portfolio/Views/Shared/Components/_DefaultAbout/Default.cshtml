@@ -17,17 +17,7 @@
 
             </div>
         }
-       
 
-        <div class="grid grid-cols-2 gap-stack-md mt-stack-sm">
-            <div>
-                <h4 class="font-label-sm text-label-sm text-primary mb-1">Frontend</h4>
-                <p class="font-body-md text-body-md text-on-surface-variant">React, Next.js, Vue, Tailwind CSS</p>
-            </div>
-            <div>
-                <h4 class="font-label-sm text-label-sm text-primary mb-1">Backend</h4>
-                <p class="font-body-md text-body-md text-on-surface-variant">Node.js, Express, PostgreSQL, MongoDB</p>
-            </div>
-        </div>
+        @await Component.InvokeAsync("_DefaultSkills")
     </div>
 </section>

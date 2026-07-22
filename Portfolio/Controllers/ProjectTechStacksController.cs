@@ -24,19 +24,22 @@ namespace Portfolio.Controllers
         public IActionResult Index()
         {
             
-            var list = _context.ProjectTechStacks
+            var projectTechStackslist = _context.ProjectTechStacks
                 .Include(x => x.Project)
                 .Include(x => x.TechStack)
                 .GroupBy(x => new { x.ProjectId, x.Project.Name })
                 .Select(g => new ProjectStackListViewModel
                 {
                     ProjectName = g.Key.Name,
-                    TechStackNames = g.Select(x => x.TechStack.Name).ToList()
+                    TechStackNames = g.Select(x => x.TechStack.Name).ToList(),
+                    CreatedAt= g.Select(x => x.Project.CreatedAt).FirstOrDefault()
                 })
+                .OrderByDescending(x => x.CreatedAt)
                 .ToList();
 
-            return View(list);
+            return View(projectTechStackslist);
         }
+
 
 
         [HttpGet]
@@ -62,6 +65,7 @@ namespace Portfolio.Controllers
 
             return View();
         }
+
 
 
         [HttpPost]
