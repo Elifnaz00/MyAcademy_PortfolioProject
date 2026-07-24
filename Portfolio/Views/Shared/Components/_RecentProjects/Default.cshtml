@@ -10,16 +10,15 @@
 
 <div class="container">
     <div class="row">
-        <div class="overflow-x-auto mt-50 col-sm-6">
+        <div class="overflow-x-auto mt-50">
             <h3 class="font-h1 text-h1 text-on-surface mb-lg">Son Yapılan Projeler</h3>
             <table class="w-full text-left border-collapse">
                 <thead>
                     <tr class="bg-surface-container text-on-surface-variant border-b border-outline-variant">
                         <th class="px-lg py-md font-label-sm uppercase tracking-wider">Proje Adı</th>
-                        <th class="px-lg py-md font-label-sm uppercase tracking-wider">Açıklaması</th>
                         <th class="px-lg py-md font-label-sm uppercase tracking-wider">Kullanılan teknolojiler</th>
-
-                        <th class="px-lg py-md font-label-sm uppercase tracking-wider text-right">Mesajı Sil</th>
+                        <th class="px-lg py-md font-label-sm uppercase tracking-wider">Oluşturulma Tarihi</th>
+                        
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-outline-variant/30">
@@ -30,18 +29,17 @@
                             <td class="px-lg py-md">
                                 @item.ProjectName
                             </td>
-                            <td class="px-lg py-md text-on-surface-variant"></td>
+                            
                             <td>
                                 @foreach (var tech in item.TechStackNames)
-                            @string.Join(",", @tech),
+                            @string.Join(",", @tech)
 
                                 </td>
                             <td class="px-lg py-md text-on-surface-variant">@item.CreatedAt</td>
                             
                             <td class="px-lg py-md text-right">
                                 <div class="flex justify-end gap-sm">
-                                    <button class="p-4 text-on-surface-variant hover:text-error hover:bg-error-container/20 rounded-md transition-all">
-                                        <span class="material-symbols-outlined text-[20px]">delete</span>
+                                    <button class="btn btn-outline-info">Proje Detay
                                     </button>
                                 </div>
                             </td>

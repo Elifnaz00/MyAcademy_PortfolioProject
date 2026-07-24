@@ -21,6 +21,7 @@ namespace Portfolio.Controllers
         }
 
 
+
         [HttpGet]
         public IActionResult CreateAbout()
         {
@@ -36,6 +37,8 @@ namespace Portfolio.Controllers
             _appDbContext.SaveChanges();
             return RedirectToAction("Index");
         }
+
+
 
 
         [HttpGet]

@@ -1,0 +1,29 @@
+﻿@model ContactInfo
+@{
+    ViewData["Title"] = "UpdateContactInfo";
+    Layout = "~/Views/AdminLayout/Layout.cshtml";
+}
+
+<form method="post">
+    <input type="hidden" asp-for="Id" />
+
+
+    <label>Başlık</label>
+    <input type="text" asp-for="Email" class="form-control" value="@Model.Email" required>
+    <br />
+
+    <label>Description</label>
+    <textarea asp-for="Address" class="form-control" value="@Model.Address" required></textarea>
+    <br />
+    <label>Linkedin Url</label>
+    <input type="text" asp-for="GithubUrl" class="form-control" value="@Model.LinkedinUrl" required>
+    <br />
+    <label>Görsel Url</label>
+    <input type="text" asp-for="GithubUrl" class="form-control" value="@Model.GithubUrl" required>
+    <br />
+
+    <button type="submit" class="btn btn-outline-dark">Güncelle</button>
+
+</form>
+
+

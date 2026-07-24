@@ -1,0 +1,35 @@
+﻿@model Education
+@{
+    ViewData["Title"] = "UpdateEducation";
+    Layout = "~/Views/AdminLayout/Layout.cshtml";
+}
+
+<form method="post">
+    <input type="hidden" asp-for="Id" />
+
+
+    <label>Başlık</label>
+    <input type="text" asp-for="SchoolName" class="form-control" value="@Model.SchoolName" required>
+    <br />
+    <label>Bölüm Adı</label>
+    <input type="text" asp-for="Department" class="form-control" value="@Model.Department" required>
+    <br />
+
+    <label>Description</label>
+    <textarea asp-for="Description" class="form-control" value="@Model.Description" required></textarea>
+    <br />
+
+    <label>GPA</label>
+    <input type="text" asp-for="GPA" class="form-control" value="@Model.GPA" required>
+    <br />
+    <label>Start Year</label>
+    <input type="text" asp-for="StartYear" class="form-control" value="@Model.StartYear" required>
+    <br />
+    <label>Mezun Yılı</label>
+    <input type="text" asp-for="GraduationYear" class="form-control" value="@Model.GraduationYear" required>
+    <br />
+
+    <button type="submit" class="btn btn-outline-dark">Güncelle</button>
+
+</form>
+

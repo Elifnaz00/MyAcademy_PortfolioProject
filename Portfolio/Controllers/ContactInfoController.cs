@@ -1,13 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Portfolio.Data.Context;
 using Portfolio.Data.Entities;
+using System.Reflection;
 
 namespace Portfolio.Controllers
 {
     public class ContactInfoController : Controller
     {
+        private readonly AppDbContext _context;
+
         public IActionResult Index()
         {
-            return View();
+            var contactInfo = _context.ContactInfos.FirstOrDefault();
+            return View(contactInfo);
         }
 
 
@@ -22,22 +28,35 @@ namespace Portfolio.Controllers
         [HttpPost]
         public IActionResult CreateContactInfo(ContactInfo ContactInfo)
         {
-            return View();
+            _context.ContactInfos.Add(ContactInfo);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
 
 
         [HttpGet]
         public IActionResult UpdateContactInfo(int id)
         {
-            return View();
+            var contactInfo = _context.ContactInfos.Find(id);
+            return View(contactInfo);
         }
 
 
 
-        [HttpGet]
-        public IActionResult UpdateContactInfo()
+        [HttpPost]
+        public IActionResult UpdateContactInfo(ContactInfo contactInfo)
         {
-            return View();
+            _context.ContactInfos.Update(contactInfo);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult DeleteContactInfo(int id) {
+            var contactInfo= _context.ContactInfos.Find();
+            _context.ContactInfos.Remove(contactInfo);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
 
     }

@@ -1,43 +1,41 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Portfolio.Data.Context;
 using Portfolio.Data.Entities;
 
 namespace Portfolio.Controllers
 {
     public class BannerController : Controller
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+        private readonly AppDbContext _context;
 
+        public BannerController(AppDbContext context)
+        {
+            _context = context;
+        }
 
         [HttpGet]
-        public IActionResult CreateBanner()
+        public IActionResult Index()
         {
-            return View();
-        }
-
-
-
-        [HttpPost]
-        public IActionResult CreateBanner(Banner Banner)
-        {
-            return View();
+            var banner= _context.Banners.FirstOrDefault();
+            return View(banner);
         }
 
 
         [HttpGet]
         public IActionResult UpdateBanner(int id)
         {
-            return View();
+            var banner= _context.Banners.Find(id);
+            return View(banner);
         }
 
 
 
-        [HttpGet]
-        public IActionResult UpdateBanner()
+        [HttpPost]
+        public IActionResult UpdateBanner(Banner banner)
         {
-            return View();
+            _context.Banners.Update(banner);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
 
     }

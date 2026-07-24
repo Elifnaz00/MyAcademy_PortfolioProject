@@ -5,6 +5,10 @@
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.js" type="text/javascript"></script>
 <script src="@Url.Content("~/Chosen/chosen.jquery.js")" type="text/javascript"></script>
@@ -118,17 +122,23 @@
                     placeholder_text_multiple: "Projede Kullanılan Teknolojileri Seçiniz"
                 }
             )
-            
-
        });
 
 
-    const myModal = document.getElementById('myModal')
 
-
+    const myModal = document.getElementById('exampleModal')
             myModal.addEventListener('shown.bs.modal', () => {
 
+                $.ajax({ url: '/UserMessages/ChangeStatus', method: 'PUT', data:1})
+            .then(function() {
+               
+            })
+            .catch(function (err) {
+               
+            });
     })
+
+   
 
 
 
@@ -166,5 +176,28 @@
         x.previousElementSibling.className.replace(" w3-green", "");
       }
     }
+
+     // Micro-interaction for keyboard shortcut hint
+        document.addEventListener('keydown', (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                e.preventDefault();
+                document.querySelector('input[type="text"]').focus();
+            }
+        });
+
+        // Simple row selection logic
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(box => {
+            box.addEventListener('change', (e) => {
+                const row = e.target.closest('.email-row-hover');
+                if (row) {
+                    if (e.target.checked) {
+                        row.classList.add('bg-primary/5');
+                    } else {
+                        row.classList.remove('bg-primary/5');
+                    }
+                }
+            });
+        });
 
 </script>

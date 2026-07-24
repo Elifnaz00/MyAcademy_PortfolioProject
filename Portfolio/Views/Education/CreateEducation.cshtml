@@ -1,0 +1,30 @@
+﻿@model Education
+@{
+    ViewData["Title"] = "CreateEducation";
+    Layout = "~/Views/AdminLayout/Layout.cshtml";
+}
+
+<form method="post">
+    <label>Okul Adı</label>
+    <input type="text" asp-for="SchoolName" class="form-control" required>
+    <br />
+
+    <label>Bölüm Adı</label>
+    <input type="text" asp-for="Department" class="form-control" required></>
+    <br />
+
+    <label>Açıklama</label>
+    <input type="text" asp-for="Description" class="form-control" required>
+    <br />
+    <label>GPA</label>
+    <input type="text" asp-for="GPA" class="form-control" required>
+    <br />
+    <input type="text" asp-for="StartYear" class="form-control" required>
+    <br />
+    <input type="text" asp-for="GraduationYear" class="form-control" required>
+    <br />
+    <button type="submit" class="btn btn-outline-dark">Kaydet</button>
+
+</form>
+
+

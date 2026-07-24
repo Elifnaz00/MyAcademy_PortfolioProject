@@ -1,0 +1,43 @@
+﻿@model UserMessage
+@{
+  
+    Layout = "~/Views/AdminLayout/Layout.cshtml";
+}
+
+
+<article class="max-w-4xl mx-auto bg-surface-container-lowest border border-outline-variant rounded-xl email-content-shadow overflow-hidden min-h-[80vh] flex flex-col">
+    <!-- Subject Header -->
+    <div class="px-8 pt-8 pb-6 border-b border-outline-variant">
+        <div class="flex items-center justify-between mb-4">
+            
+            <span class="px-3 py-1 bg-surface-container-high text-on-primary-fixed-variant rounded-full text-label-sm font-label-sm flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-primary-container"></span> Gelen Kutusu
+            </span>
+        </div>
+        <div class="flex items-center gap-4">
+            <img class="w-12 h-12 rounded-xl object-cover bg-surface-container" data-alt="A sophisticated brand identity logo for a high-tech company named Acme Corp. The logo features minimalist geometric shapes with a professional corporate blue and charcoal gray color scheme, set against a clean white circular backdrop. The design is modern, sharp, and reflects high-end business services." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0L9nj8hwAy24ZYee7am7FKGeBV7ALuMf63e5iM8aW-VwJ3MiCB2BO0GrrNKbEx9WCsyx5F-W2vJiVsldQSeCJP6mkvO4o5pj0Ky_PfxwHXge3EtZ4ESxr7htteR4HTeMB1vWwXdRr7quzXTQ5PpfVccSMknAFRVNj1LYTVQtWX1ty6QkNKyG9zu4R1txLiYxo8827RdUJygkROmVuKVwHHB7lrfxnzEftg6026nlb-VqZfb9VCGnmPJDmrwrQh3VR6RBXvpFyVZh7" />
+            <div class="flex-1">
+                <div class="flex items-center justify-between">
+                    <p class="text-body-lg font-semibold text-on-surface">@Model.Name <span class="text-body-md font-normal text-on-surface-variant ml-2">&lt;@Model.Mail&gt;</span></p>
+                    <span class="text-label-md font-label-md text-on-surface-variant">Oct 26, 2023, 10:45 AM</span>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+    <!-- Email Body -->
+    <div class="px-8 py-8 flex-1">
+        <div class="text-body-lg text-on-surface space-y-6 leading-relaxed">
+            @Model.MessageBody
+        </div>
+       
+    </div>
+
+    <div class="px-8 py-6 bg-surface-container-low border-t border-outline-variant">
+        <div class="flex gap-4 mb-4">
+            <button class="flex-1 py-3 px-6 rounded-xl border border-outline-variant bg-white text-on-surface-variant font-label-md text-label-md flex items-center justify-center gap-2 hover:border-primary hover:text-primary transition-all" onclick="toggleReply()">
+                <span class="material-symbols-outlined text-[18px]" data-icon="reply">reply</span> Yanıtla
+            </button>
+        </div>
+    </div>
+</article>

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Portfolio.Data.Context;
 using Portfolio.Data.Entities;
 using Portfolio.Models.Project;
@@ -19,7 +20,7 @@ namespace Portfolio.Controllers
 
         public IActionResult Index()
         {
-            var projectList= _context.Projects.OrderByDescending(e => e.CreatedAt).ToList();
+            var projectList= _context.Projects.AsNoTracking().OrderByDescending(e => e.CreatedAt).ToList();
             return View(projectList);
         }
 
@@ -27,7 +28,7 @@ namespace Portfolio.Controllers
 
         private MultiSelectList GetTechStacks(string[]? selectedValues)
         {
-          var techStackList = _context.TechStacks.ToList();
+          var techStackList = _context.TechStacks.AsNoTracking().ToList();
 
            
             return new MultiSelectList(techStackList, "Id", "Name", selectedValues);
@@ -49,7 +50,6 @@ namespace Portfolio.Controllers
         [HttpPost]
         public IActionResult CreateProject(Project project, string[] techSelectListItems)
           {
-            
 
             if (!ModelState.IsValid)
             {
@@ -57,8 +57,8 @@ namespace Portfolio.Controllers
                 
                 return View(project);
             } 
-            //_context.Projects.Add(addProjectViewModel);
-            //_context.SaveChanges();
+            _context.Projects.Add(project);
+            _context.SaveChanges();
             return RedirectToAction("Index", "Project");
         }
 

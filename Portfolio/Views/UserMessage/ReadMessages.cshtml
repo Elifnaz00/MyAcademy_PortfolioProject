@@ -1,43 +1,51 @@
 ﻿@model List<UserMessage>
 @{
-    ViewData["Title"] = "Okunan Mesajlar";
+ 
     Layout = "~/Views/AdminLayout/Layout.cshtml";
 }
 
-<div class="overflow-x-auto">
-    <table class="w-full text-left border-collapse">
-        <thead>
-            <tr class="bg-surface-container text-on-surface-variant border-b border-outline-variant">
-                <th class="px-lg py-md font-label-sm uppercase tracking-wider">Gönderen Adı</th>
-                <th class="px-lg py-md font-label-sm uppercase tracking-wider">Gönderen Mail</th>
-                <th class="px-lg py-md font-label-sm uppercase tracking-wider">Mesaj İçeriği</th>
-             
-                <th class="px-lg py-md font-label-sm uppercase tracking-wider text-right">Mesajı Sil</th>
-            </tr>
-        </thead>
-        <tbody class="divide-y divide-outline-variant/30">
 
-           @foreach(var item in Model)
-           {
-            <tr class="hover:bg-surface-container-lowest/50 transition-colors">
-                <td class="px-lg py-md">
-                   @item.Name
-                </td>
-                <td class="px-lg py-md text-on-surface-variant">@item.Mail</td>
-                    <td class="px-lg py-md text-on-surface-variant">@item.MessageBody.ToString().Substring(0, 50) ...</td>
-                
-                <td class="px-lg py-md text-right">
-                    <div class="flex justify-end gap-sm">
-
-                            <button  class="p-4 text-on-surface-variant hover:text-error hover:bg-error-container/20 rounded-md transition-all">
-                            <span class="material-symbols-outlined text-[20px]">delete</span>
-                        </button>
+  <div class="p-gutter">
+        <!-- Email List Container -->
+        <div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden flex flex-col">
+            <!-- Email List Rows -->
+            <div class="px-4 py-3 border-b border-outline-variant bg-surface-container-low/30 flex items-center gap-2">
+                <div class="flex bg-surface-container-high p-1 rounded-xl">
+                <a asp-controller="UserMessage" asp-action="AllMessages" class="px-4 py-1.5 rounded-lg text-label-md font-label-md text-on-surface-variant hover:bg-blue-300 focus:outline-2 focus:outline-offset-2 focus:outline-violet-500 active:bg-violet-700 transition-all">Tümü</a>
+                <a asp-controller="UserMessage" asp-action="UnReadMessages" class="px-4 py-1.5 rounded-lg text-label-md font-label-md text-on-surface-variant hover:bg-blue-300 focus:outline-2 focus:outline-offset-2 focus:outline-violet-500 active:bg-violet-700 transition-all">Okunmamış</a>
+                <a asp-controller="UserMessage" asp-action="ReadMessages" class="px-4 py-1.5 rounded-lg text-label-md font-label-md text-on-surface-variant hover:bg-blue-300 focus:outline-2 focus:outline-offset-2 focus:outline-violet-500 active:bg-violet-700 transition-all">Okunmuş</a>
+                </div>
+            </div><div class="divide-y divide-outline-variant">
+                <!-- Email Row 1 (Unread) -->
+                @foreach(var item in Model)
+            {
+                  <div class="flex items-center px-4 py-3 email-row-hover transition-colors cursor-pointer group bg-surface-container-low/30">
+                    
+                    <div class="w-48 shrink-0">
+                        <span class="font-bold text-on-surface text-body-md truncate block">@item.Mail</span>
+                        <span class="text-on-surface-variant/70 text-body-md truncate block">@item.Name</span>
                     </div>
-                </td>
-            </tr>
-           }
-            
-        </tbody>
-    </table>
-</div>
+                    <div class="flex-1 min-w-0 pr-8">
+                        <span class="text-on-surface-variant/70 text-body-md truncate block">@item.MessageBody...</span>
+                    </div>
+                   
+                    <div>
+                        <a href="/UserMessages/MessageDetail/@item.Id" type="button" class="btn btn-outline-primary btn-sm"> Görüntüle </a>
+                    </div>
+                    
+                </div>
 
+            }
+        </div>
+          
+            <!-- Footer / Pagination -->
+            <div class="p-4 bg-surface-container-low/50 border-t border-outline-variant flex justify-between items-center">
+                <p class="text-label-sm text-on-surface-variant/60">Showing 5 of 1,248 messages</p>
+                <div class="flex gap-2">
+                    <button class="px-4 py-2 border border-outline-variant rounded-lg text-label-md font-label-md bg-white hover:bg-surface-container-high transition-colors">Önceki</button>
+                    <button class="px-4 py-2 border border-outline-variant rounded-lg text-label-md font-label-md bg-white hover:bg-surface-container-high transition-colors">Sonraki</button>
+                </div>
+            </div>
+        </div>
+  
+    </div>

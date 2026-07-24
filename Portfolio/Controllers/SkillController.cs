@@ -1,13 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Portfolio.Data.Context;
 using Portfolio.Data.Entities;
 
 namespace Portfolio.Controllers
 {
     public class SkillController : Controller
     {
+        private readonly AppDbContext _appDbContext;
+
         public IActionResult Index()
         {
-            return View();
+            var skills = _appDbContext.Skills.AsNoTracking().ToList();
+            return View(skills);
+            
         }
 
 

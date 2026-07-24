@@ -1,15 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Portfolio.Data.Context;
 using Portfolio.Data.Entities;
+using System.Reflection;
 
 namespace Portfolio.Controllers
 {
     public class ExperienceController : Controller
     {
-        
+        private readonly AppDbContext _context;
 
-             public IActionResult Index()
+
+        public IActionResult Index()
         {
-            return View();
+            var experience = _context.Experiences.FirstOrDefault();
+            return View(experience);
         }
 
 
@@ -22,24 +26,42 @@ namespace Portfolio.Controllers
 
 
         [HttpPost]
-        public IActionResult CreateExperience(Experience Experience)
+        public IActionResult CreateExperience(Experience experience)
         {
-            return View();
+            _context.Experiences.Add(experience);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+            
         }
 
 
         [HttpGet]
         public IActionResult UpdateExperience(int id)
         {
-            return View();
+            var experience = _context.Experiences.Find(id);
+            return View(experience);
+        }
+
+
+
+        [HttpPost]
+        public IActionResult UpdateExperience(Experience experience)
+        {
+            _context.Experiences.Update(experience);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+           
         }
 
 
 
         [HttpGet]
-        public IActionResult UpdateExperience()
+        public IActionResult DeleteExperience(int id)
         {
-            return View();
+            var experience = _context.Experiences.Find(id);
+            _context.Experiences.Remove(experience);
+            _context.SaveChanges();
+            return View(experience);
         }
 
 

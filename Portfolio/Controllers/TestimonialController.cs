@@ -1,13 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Portfolio.Data.Context;
 using Portfolio.Data.Entities;
 
 namespace Portfolio.Controllers
 {
     public class TestimonialController : Controller
     {
+        private readonly AppDbContext _appDbContext;
+
+
         public IActionResult Index()
         {
-            return View();
+            var testimonials = _appDbContext.Testimonials.AsNoTracking().ToList();
+            return View(testimonials);
+           
         }
 
 
@@ -22,22 +29,39 @@ namespace Portfolio.Controllers
         [HttpPost]
         public IActionResult CreateTestimonial(Testimonial testimonial)
         {
-            return View();
+            _appDbContext.Testimonials.Add(testimonial);
+            _appDbContext.SaveChanges();
+            return RedirectToAction("Index");
+
+            
         }
 
 
         [HttpGet]
         public IActionResult UpdateTestimonial(int id)
         {
-            return View();
+            var testimonial = _appDbContext.Testimonials.Find(id);
+            return View(testimonial);
         }
 
 
 
-        [HttpGet]
-        public IActionResult UpdateTestimonial()
+        [HttpPost]
+        public IActionResult UpdateTestimonial(Testimonial testimonial)
         {
-            return View();
+            _appDbContext.Testimonials.Update(testimonial);
+            _appDbContext.SaveChanges();
+            return RedirectToAction("Index");
+            
+        }
+
+        [HttpGet]
+        public IActionResult DeleteTestimonial(int id)
+        {
+            var testimonial= _appDbContext.Testimonials.Find(id);
+            _appDbContext.Testimonials.Remove(testimonial);
+            _appDbContext.SaveChanges();
+            return RedirectToAction("Index");
         }
 
 
