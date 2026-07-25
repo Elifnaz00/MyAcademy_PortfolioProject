@@ -1,0 +1,14 @@
+﻿@model Skill
+@{
+    ViewData["Title"] = "CreateSkill";
+    Layout = "~/Views/AdminLayout/Layout.cshtml";
+}
+
+<form method="post">
+    <label>Yetenek Adı</label>
+    <input type="text" asp-for="Name" class="form-control" required>
+    <br />
+    <button type="submit" class="btn btn-outline-dark">Kaydet</button>
+
+</form>
+

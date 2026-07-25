@@ -26,25 +26,42 @@ namespace Portfolio.Controllers
 
 
         [HttpPost]
-        public IActionResult CreateSkill(Skill Skill)
+        public IActionResult CreateSkill(Skill skill)
         {
-            return View();
+            _appDbContext.Skills.Add(skill);
+            _appDbContext.SaveChanges();
+            return RedirectToAction("Index");
+            
         }
 
 
         [HttpGet]
         public IActionResult UpdateSkill(int id)
         {
-            return View();
+            var skill = _appDbContext.Skills.Find(id);
+            return View(skill);
         }
 
 
 
-        [HttpGet]
-        public IActionResult UpdateSkill()
+        [HttpPost]
+        public IActionResult UpdateSkill(Skill skill)
         {
+            _appDbContext.Skills.Update(skill);
+            _appDbContext.SaveChanges();
+            return RedirectToAction("Index");
+           
+        }
+
+        [HttpPost]
+        public IActionResult DeleteSkill(int id)
+        {
+            var skill = _appDbContext.Skills.Find(id);
+            _appDbContext.Skills.Remove(skill);
+            _appDbContext.SaveChanges();
             return View();
         }
+
 
     }
 }
