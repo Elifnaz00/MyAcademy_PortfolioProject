@@ -18,85 +18,114 @@ namespace Portfolio.Controllers
         }
 
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var projectList= _context.Projects.AsNoTracking().OrderByDescending(e => e.CreatedAt).ToList();
+            var projectList = await _context.Projects
+                .AsNoTracking()
+                .OrderByDescending(x => x.CreatedAt)
+                .ToListAsync();
+
             return View(projectList);
         }
 
-
-
-        private MultiSelectList GetTechStacks(string[]? selectedValues)
+        private async Task<MultiSelectList> GetTechStacks(string[]? selectedValues)
         {
-          var techStackList = _context.TechStacks.AsNoTracking().ToList();
+            var techStackList = await _context.TechStacks
+                .AsNoTracking()
+                .ToListAsync();
 
-           
             return new MultiSelectList(techStackList, "Id", "Name", selectedValues);
-
         }
-
-
 
         [HttpGet]
-        public IActionResult CreateProject()
+        public async Task<IActionResult> CreateProject()
         {
-            ViewBag.TechStackList = GetTechStacks(null);
+            ViewBag.TechStackList = await GetTechStacks(null);
             return View();
-
         }
-
-      
 
         [HttpPost]
-        public IActionResult CreateProject(Project project, string[] techSelectListItems)
-          {
-
+        public async Task<IActionResult> CreateProject(Project project, string[] techSelectListItems)
+        {
             if (!ModelState.IsValid)
             {
-                ViewBag.YouSelected = ViewBag.TechStackList = GetTechStacks(techSelectListItems); 
-                
+                ViewBag.YouSelected = techSelectListItems;
+                ViewBag.TechStackList = await GetTechStacks(techSelectListItems);
+
                 return View(project);
-            } 
-            _context.Projects.Add(project);
-            _context.SaveChanges();
-            return RedirectToAction("Index", "Project");
+            }
+
+            try
+            {
+                await _context.Projects.AddAsync(project);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Proje oluşturulurken bir hata oluştu.");
+
+                ViewBag.YouSelected = techSelectListItems;
+                ViewBag.TechStackList = await GetTechStacks(techSelectListItems);
+
+                return View(project);
+            }
         }
 
-
-        
-
-
         [HttpGet]
-        public IActionResult UpdateProject(int id)
+        public async Task<IActionResult> UpdateProject(int id)
         {
-            var project= _context.Projects.Find(id);
+            var project = await _context.Projects.FindAsync(id);
+
+            if (project is null)
+                return NotFound();
+
             return View(project);
         }
 
-
-
-
         [HttpPost]
-        public IActionResult UpdateProject(Project project)
+        public async Task<IActionResult> UpdateProject(Project project)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(project);
             }
-            _context.Projects.Update(project);
-            _context.SaveChanges();
-            return RedirectToAction("Index", "Project");
+
+            try
+            {
+                _context.Projects.Update(project);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Proje güncellenirken bir hata oluştu.");
+                return View(project);
+            }
         }
 
-       
-
-
-        public IActionResult DeleteProject(int id)
+        [HttpPost]
+        public async Task<IActionResult> DeleteProject(int id)
         {
-            var project = _context.Projects.Find(id);
-            _context.Projects.Remove(project);
-            _context.SaveChanges();
-            return RedirectToAction("Index", "Project");
+            var project = await _context.Projects.FindAsync(id);
+
+            if (project is null)
+                return NotFound();
+
+            try
+            {
+                _context.Projects.Remove(project);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Proje silinirken bir hata oluştu.");
+                return View(project);
+            }
         }
 
     }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Portfolio.Data.Context;
 using Portfolio.Data.Entities;
 
@@ -7,15 +8,26 @@ namespace Portfolio.Controllers
     public class EducationController : Controller
     {
         private readonly AppDbContext _appDbContext;
-        public IActionResult Index()
+
+
+        public EducationController(AppDbContext appDbContext)
         {
-            var education = _appDbContext.Educations.FirstOrDefault();
+            _appDbContext = appDbContext;
+        }
+
+
+        public async Task<IActionResult> Index()
+        {
+            var education = await _appDbContext.Educations.FirstOrDefaultAsync();
+            if (education is null)
+                return NotFound();
+
             return View(education);
         }
 
 
         [HttpGet]
-        public IActionResult CreateEducation()
+        public async Task<IActionResult> CreateEducation()
         {
             
             return View();
@@ -24,40 +36,78 @@ namespace Portfolio.Controllers
 
 
         [HttpPost]
-        public IActionResult CreateEducation(Education education)
+        public async Task<IActionResult> CreateEducation(Education education)
         {
-            _appDbContext.Educations.Add(education);
-            _appDbContext.SaveChanges();
-            return RedirectToAction("Index");
+            if (!ModelState.IsValid)
+                return View(education);
+            
+            try
+            {
+                _appDbContext.Educations.Add(education);
+                await _appDbContext.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Kayıt sırasında hata oluştu.");
+                return View(education);
+            }
+           
             
         }
 
 
         [HttpGet]
-        public IActionResult UpdateEducation(int id)
+        public async Task<IActionResult> UpdateEducation(int id)
         {
-            var Education = _appDbContext.Educations.Find(id);
-            return View(Education);
+            var education = await _appDbContext.Educations.FindAsync(id);
+            if (education is null)
+                return NotFound();
+
+            return View(education);
           
         }
 
 
 
         [HttpPost]
-        public IActionResult UpdateEducation(Education education)
+        public async Task<IActionResult> UpdateEducation(Education education)
         {
-            _appDbContext.Educations.Update(education);
-            _appDbContext.SaveChanges();
-            return RedirectToAction("Index");
+            if (!ModelState.IsValid)
+                return View(education);
+            try
+            {
+                _appDbContext.Educations.Update(education);
+                await _appDbContext.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Güncelleme sırasında hata oluştu.");
+                return View(education);
+            }
+           
            
         }
 
-        public IActionResult DeleteEducation(int id)
+        public async Task<IActionResult> DeleteEducation(int id)
         {
             var education = _appDbContext.Educations.Find(id);
-            _appDbContext.Educations.Remove(education);
-            _appDbContext.SaveChanges();
-            return RedirectToAction("Index");
+            if (education is null)
+                return NotFound();
+
+            try
+            {
+                _appDbContext.Educations.Remove(education);
+                await  _appDbContext.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Silme sırasında hata oluştu.");
+                return View();
+            }
+            
         }
 
     }

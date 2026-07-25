@@ -13,70 +13,102 @@ namespace Portfolio.Controllers
             _appDbContext = appDbContext;
         }
 
-
-        public IActionResult AllMessages()
+        public async Task<IActionResult> AllMessages()
         {
-            var readMessagesList = _appDbContext.UserMessages.AsNoTracking().ToList();
+            var readMessagesList = await _appDbContext.UserMessages
+                .AsNoTracking()
+                .ToListAsync();
+
             return View(readMessagesList);
         }
 
-
-
-        public IActionResult ReadMessages()
+        public async Task<IActionResult> ReadMessages()
         {
-            var readMessagesList=_appDbContext.UserMessages.Where(x => x.IsRead == true).ToList();
+            var readMessagesList = await _appDbContext.UserMessages
+                .AsNoTracking()
+                .Where(x => x.IsRead)
+                .ToListAsync();
+
             return View(readMessagesList);
         }
-
-
-
 
         [HttpGet]
-        public IActionResult UnReadMessages()
+        public async Task<IActionResult> UnReadMessages()
         {
-            var unReadMessagesList = _appDbContext.UserMessages.Where(x => x.IsRead == false).ToList();
+            var unReadMessagesList = await _appDbContext.UserMessages
+                .AsNoTracking()
+                .Where(x => !x.IsRead)
+                .ToListAsync();
+
             return View(unReadMessagesList);
         }
 
-
-
-        [HttpGet]
-        public IActionResult ChangeStatus(int id)
+        [HttpPost]
+        public async Task<IActionResult> ChangeStatus(int id)
         {
-            var message = _appDbContext.UserMessages.Find(id);
-            message.IsRead = true;
-            _appDbContext.SaveChanges();
-            return NoContent();
-        }
+            var message = await _appDbContext.UserMessages.FindAsync(id);
 
+            if (message is null)
+                return NotFound();
+
+            try
+            {
+                message.IsRead = true;
+                await _appDbContext.SaveChangesAsync();
+
+                return NoContent();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
 
         [HttpGet]
         public async Task<IActionResult> MessageDetail(int id)
         {
             var message = await _appDbContext.UserMessages.FindAsync(id);
+
             if (message is null)
                 return NotFound();
-           
-            if (!message.IsRead)
+
+            try
             {
-                message.IsRead = true;
-                await _appDbContext.SaveChangesAsync();
+                if (!message.IsRead)
+                {
+                    message.IsRead = true;
+                    await _appDbContext.SaveChangesAsync();
+                }
+
+                return View(message);
             }
-        
-            return View(message);
+            catch
+            {
+                ModelState.AddModelError("", "Mesaj görüntülenirken bir hata oluştu.");
+                return View(message);
+            }
         }
 
-
-        [HttpGet]
-        public IActionResult DeleteMessages(int id)
+        [HttpPost]
+        public async Task<IActionResult> DeleteMessages(int id)
         {
-            var unReadMessagesList = _appDbContext.UserMessages.Find(id);
-            _appDbContext.UserMessages.Remove(unReadMessagesList);  
-            _appDbContext.SaveChanges();
-           
-            return View(unReadMessagesList);
+            var message = await _appDbContext.UserMessages.FindAsync(id);
+
+            if (message is null)
+                return NotFound();
+
+            try
+            {
+                _appDbContext.UserMessages.Remove(message);
+                await _appDbContext.SaveChangesAsync();
+
+                return RedirectToAction(nameof(AllMessages));
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Silme sırasında hata oluştu.");
+                return View(message);
+            }
         }
-
-
     }
 }

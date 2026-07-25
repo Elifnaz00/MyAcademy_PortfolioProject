@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Portfolio.Data.Context;
 using Portfolio.Data.Entities;
 using System.Reflection;
@@ -10,12 +11,20 @@ namespace Portfolio.Controllers
         private readonly AppDbContext _context;
 
 
-        public IActionResult Index()
+        public ExperienceController(AppDbContext context)
         {
-            var experience = _context.Experiences.FirstOrDefault();
-            return View(experience);
+            _context = context;
         }
 
+        public async Task<IActionResult> Index()
+        {
+            var experience = await _context.Experiences.FirstOrDefaultAsync();
+
+            if (experience is null)
+                return NotFound();
+
+            return View(experience);
+        }
 
         [HttpGet]
         public IActionResult CreateExperience()
@@ -23,47 +32,82 @@ namespace Portfolio.Controllers
             return View();
         }
 
-
-
         [HttpPost]
-        public IActionResult CreateExperience(Experience experience)
+        public async Task<IActionResult> CreateExperience(Experience experience)
         {
-            _context.Experiences.Add(experience);
-            _context.SaveChanges();
-            return RedirectToAction("Index");
-            
+            if (!ModelState.IsValid)
+            {
+                return View(experience);
+            }
+
+            try
+            {
+                await _context.Experiences.AddAsync(experience);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Kayıt oluşturulurken bir hata oluştu.");
+                return View(experience);
+            }
         }
 
-
         [HttpGet]
-        public IActionResult UpdateExperience(int id)
+        public async Task<IActionResult> UpdateExperience(int id)
         {
-            var experience = _context.Experiences.Find(id);
+            var experience = await _context.Experiences.FindAsync(id);
+
+            if (experience is null)
+                return NotFound();
+
             return View(experience);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> UpdateExperience(Experience experience)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(experience);
+            }
 
+            try
+            {
+                _context.Experiences.Update(experience);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Güncelleme sırasında hata oluştu.");
+                return View(experience);
+            }
+        }
 
         [HttpPost]
-        public IActionResult UpdateExperience(Experience experience)
+        public async Task<IActionResult> DeleteExperience(int id)
         {
-            _context.Experiences.Update(experience);
-            _context.SaveChanges();
-            return RedirectToAction("Index");
-           
+            var experience = await _context.Experiences.FindAsync(id);
+
+            if (experience is null)
+                return NotFound();
+
+            try
+            {
+                _context.Experiences.Remove(experience);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Silme sırasında hata oluştu.");
+                return View(experience);
+            }
         }
-
-
-
-        [HttpGet]
-        public IActionResult DeleteExperience(int id)
-        {
-            var experience = _context.Experiences.Find(id);
-            _context.Experiences.Remove(experience);
-            _context.SaveChanges();
-            return View(experience);
-        }
-
 
     }
 }

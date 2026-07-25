@@ -9,60 +9,107 @@ namespace Portfolio.Controllers
     {
         private readonly AppDbContext _appDbContext;
 
-        public IActionResult Index()
+        public ServiceController(AppDbContext appDbContext)
         {
-            var services = _appDbContext.Services.AsNoTracking().ToList();
-            return View(services);
-            
+            _appDbContext = appDbContext;
         }
 
+        public async Task<IActionResult> Index()
+        {
+            var services = await _appDbContext.Services
+                .AsNoTracking()
+                .ToListAsync();
+
+            return View(services);
+        }
 
         [HttpGet]
         public IActionResult CreateService()
         {
-
             return View();
         }
 
 
-
         [HttpPost]
-        public IActionResult CreateService(Service service)
+        public async Task<IActionResult> CreateService(Service service)
         {
-            _appDbContext.Services.Add(service);
-            _appDbContext.SaveChanges();
-            return RedirectToAction("Index");
-           
+            if (!ModelState.IsValid)
+            {
+                return View(service);
+            }
+
+            try
+            {
+                await _appDbContext.Services.AddAsync(service);
+                await _appDbContext.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Kayıt oluşturulurken bir hata oluştu.");
+                return View(service);
+            }
         }
 
 
         [HttpGet]
-        public IActionResult UpdateService(int id)
+        public async Task<IActionResult> UpdateService(int id)
         {
-            var service = _appDbContext.Services.Find(id);
+            var service = await _appDbContext.Services.FindAsync(id);
+
+            if (service is null)
+                return NotFound();
+
             return View(service);
         }
 
 
+        [HttpPost]
+        public async Task<IActionResult> UpdateService(Service service)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(service);
+            }
+
+            try
+            {
+                _appDbContext.Services.Update(service);
+                await _appDbContext.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Güncelleme sırasında hata oluştu.");
+                return View(service);
+            }
+        }
+
+
 
         [HttpPost]
-        public IActionResult UpdateService(Service service)
+        public async Task<IActionResult> DeleteService(int id)
         {
-            _appDbContext.Services.Update(service);
-            _appDbContext.SaveChanges();
-            return RedirectToAction("Index");
+            var service = await _appDbContext.Services.FindAsync(id);
+
+            if (service is null)
+                return NotFound();
+
+            try
+            {
+                _appDbContext.Services.Remove(service);
+                await _appDbContext.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Silme sırasında hata oluştu.");
+                return View(service);
+            }
         }
-
-
-        [HttpGet]
-        public IActionResult DeleteService(int id)
-        {
-            var service = _appDbContext.Services.Find(id);
-            _appDbContext.Services.Remove(service);
-            _appDbContext.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-
     }
 }
+

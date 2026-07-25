@@ -7,7 +7,6 @@
 @{
 }
 
-
 <div class="container">
     <div class="row">
         <div class="overflow-x-auto mt-50">
@@ -35,7 +34,7 @@
                             @string.Join(",", @tech)
 
                                 </td>
-                            <td class="px-lg py-md text-on-surface-variant">@item.CreatedAt</td>
+                                <td class="px-lg py-md text-on-surface-variant">@item.CreatedAt.ToString("dd.MM.yyyy")</td>
                             
                             <td class="px-lg py-md text-right">
                                 <div class="flex justify-end gap-sm">

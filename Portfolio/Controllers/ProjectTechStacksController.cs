@@ -21,10 +21,10 @@ namespace Portfolio.Controllers
            
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            
-            var projectTechStackslist = _context.ProjectTechStacks
+            var projectTechStacksList = await _context.ProjectTechStacks
+                .AsNoTracking()
                 .Include(x => x.Project)
                 .Include(x => x.TechStack)
                 .GroupBy(x => new { x.ProjectId, x.Project.Name })
@@ -32,36 +32,38 @@ namespace Portfolio.Controllers
                 {
                     ProjectName = g.Key.Name,
                     TechStackNames = g.Select(x => x.TechStack.Name).ToList(),
-                    CreatedAt= g.Select(x => x.Project.CreatedAt).FirstOrDefault()
+                    CreatedAt = g.Select(x => x.Project.CreatedAt).FirstOrDefault()
                 })
                 .OrderByDescending(x => x.CreatedAt)
-                .ToList();
+                .ToListAsync();
 
-            return View(projectTechStackslist);
+            return View(projectTechStacksList);
         }
 
 
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            var projects = _context.Projects.ToList();   
-            var techStacks = _context.TechStacks.ToList();   
+            var projects = await _context.Projects
+                .AsNoTracking()
+                .ToListAsync();
 
-            ViewBag.Projects = (from project in projects
-                                select new SelectListItem
-                                {
-                                    Value = project.Id.ToString(),
-                                    Text = project.Name
-                                }).ToList();
+            var techStacks = await _context.TechStacks
+                .AsNoTracking()
+                .ToListAsync();
 
-            ViewBag.TechStacks = (from techStack in techStacks
-                                  select new SelectListItem
-                                  {
-                                      Value = techStack.Id.ToString(),
-                                      Text = techStack.Name
-                                  }).ToList();  
+            ViewBag.Projects = projects.Select(project => new SelectListItem
+            {
+                Value = project.Id.ToString(),
+                Text = project.Name
+            }).ToList();
 
+            ViewBag.TechStacks = techStacks.Select(techStack => new SelectListItem
+            {
+                Value = techStack.Id.ToString(),
+                Text = techStack.Name
+            }).ToList();
 
             return View();
         }
@@ -69,11 +71,54 @@ namespace Portfolio.Controllers
 
 
         [HttpPost]
-        public IActionResult Create(ProjectTechStack projectTechStack)
+        public async Task<IActionResult> Create(ProjectTechStack projectTechStack)
         {
-            var list = _context.ProjectTechStacks.Add(projectTechStack);    
-            _context.SaveChanges(); 
-            return RedirectToAction("Index", "ProjectTechStacks");
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Projects = (await _context.Projects.AsNoTracking().ToListAsync())
+                    .Select(project => new SelectListItem
+                    {
+                        Value = project.Id.ToString(),
+                        Text = project.Name
+                    }).ToList();
+
+                ViewBag.TechStacks = (await _context.TechStacks.AsNoTracking().ToListAsync())
+                    .Select(techStack => new SelectListItem
+                    {
+                        Value = techStack.Id.ToString(),
+                        Text = techStack.Name
+                    }).ToList();
+
+                return View(projectTechStack);
+            }
+
+            try
+            {
+                await _context.ProjectTechStacks.AddAsync(projectTechStack);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Kayıt oluşturulurken bir hata oluştu.");
+
+                ViewBag.Projects = (await _context.Projects.AsNoTracking().ToListAsync())
+                    .Select(project => new SelectListItem
+                    {
+                        Value = project.Id.ToString(),
+                        Text = project.Name
+                    }).ToList();
+
+                ViewBag.TechStacks = (await _context.TechStacks.AsNoTracking().ToListAsync())
+                    .Select(techStack => new SelectListItem
+                    {
+                        Value = techStack.Id.ToString(),
+                        Text = techStack.Name
+                    }).ToList();
+
+                return View(projectTechStack);
+            }
         }
     }
 }

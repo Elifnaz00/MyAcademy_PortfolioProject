@@ -4,50 +4,262 @@
     Layout = null;
 }
 
+
 <!DOCTYPE html>
-
-<html>
+<html class="dark" lang="tr">
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Login</title>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-high": "#222a3d",
+                      "secondary-container": "#03b5d3",
+                      "on-secondary-fixed-variant": "#004e5c",
+                      "on-primary-fixed-variant": "#6900b3",
+                      "tertiary": "#ffb690",
+                      "on-secondary": "#003640",
+                      "on-tertiary-container": "#4a1c00",
+                      "background": "#0b1326",
+                      "surface-container-highest": "#2d3449",
+                      "surface-dim": "#0b1326",
+                      "on-secondary-container": "#00424e",
+                      "inverse-surface": "#dae2fd",
+                      "on-surface-variant": "#cfc2d6",
+                      "on-primary-fixed": "#2c0051",
+                      "on-surface": "#dae2fd",
+                      "tertiary-fixed-dim": "#ffb690",
+                      "tertiary-fixed": "#ffdbca",
+                      "surface-container-lowest": "#060e20",
+                      "primary-container": "#b76dff",
+                      "on-secondary-fixed": "#001f26",
+                      "on-tertiary-fixed-variant": "#783200",
+                      "primary": "#ddb7ff",
+                      "outline-variant": "#4d4354",
+                      "secondary-fixed-dim": "#4cd7f6",
+                      "surface-bright": "#31394d",
+                      "tertiary-container": "#ec6a06",
+                      "on-error-container": "#ffdad6",
+                      "on-primary-container": "#400071",
+                      "error-container": "#93000a",
+                      "surface-container": "#171f33",
+                      "inverse-on-surface": "#283044",
+                      "secondary": "#4cd7f6",
+                      "primary-fixed-dim": "#ddb7ff",
+                      "on-error": "#690005",
+                      "on-tertiary": "#552100",
+                      "on-background": "#dae2fd",
+                      "outline": "#988d9f",
+                      "surface": "#0b1326",
+                      "primary-fixed": "#f0dbff",
+                      "surface-container-low": "#131b2e",
+                      "error": "#ffb4ab",
+                      "on-primary": "#490080",
+                      "on-tertiary-fixed": "#341100",
+                      "inverse-primary": "#842bd2",
+                      "surface-tint": "#ddb7ff",
+                      "secondary-fixed": "#acedff",
+                      "surface-variant": "#2d3449"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stack-sm": "12px",
+                      "stack-md": "24px",
+                      "stack-lg": "48px",
+                      "container-max": "1200px",
+                      "login-card-width": "440px",
+                      "base": "8px",
+                      "gutter": "24px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Sora"],
+                      "label-bold": ["Inter"],
+                      "headline-lg-mobile": ["Sora"],
+                      "headline-xl": ["Sora"],
+                      "body-md": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "label-bold": ["14px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0b1326;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
 
-    <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+        .glass-card {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+            .glass-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 1px;
+                background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            }
+
+        .neon-glow-purple {
+            background: radial-gradient(circle, rgba(183, 109, 255, 0.25) 0%, transparent 70%);
+            filter: blur(60px);
+        }
+
+        .neon-glow-cyan {
+            background: radial-gradient(circle, rgba(76, 215, 246, 0.25) 0%, transparent 70%);
+            filter: blur(60px);
+        }
+
+        .neon-glow-magenta {
+            background: radial-gradient(circle, rgba(236, 106, 6, 0.2) 0%, transparent 70%);
+            filter: blur(60px);
+        }
+
+        .input-glow:focus-within {
+            box-shadow: 0 0 15px rgba(76, 215, 246, 0.3);
+            border-color: #4cd7f6;
+        }
+
+        .btn-gradient {
+            background: linear-gradient(135deg, #b76dff 0%, #4cd7f6 100%);
+            box-shadow: 0 4px 15px rgba(183, 109, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+
+            .btn-gradient:hover {
+                box-shadow: 0 4px 25px rgba(183, 109, 255, 0.6);
+                transform: translateY(-1px);
+            }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
 </head>
-<body>
-
-    <div class="container">
-
-
-
-        <div class="col-8 text-center card">
-
-            <h4 class="card-title">Giriş Formu</h4>
-
-            <div class="card-body">
-                <form method="post">
-                    <label>Kullanıcı Adı</label>
-                    <input type="text" asp-for="UserName" class="form-control" />
-                    <span class="text-danger" asp-validation-for="UserName"></span>
-                    <br />
-
-                    <label>Şifre</label>
-                    <input type="password" asp-for="Password" class="form-control" />
-                    <span class="text-danger" asp-validation-for="Password"></span>
-                    <br />
-
-                    <span class="text-danger">@Html.ValidationSummary(excludePropertyErrors: true)</span>
-
-                    <button class="btn btn-outline-dark">Giriş Yap</button>
-
-                </form>
-            </div>
-
-        </div>
-
-
-
+<body class="antialiased text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+   
+    <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-1/4 -left-1/4 w-[600px] h-[600px] neon-glow-purple animate-pulse"></div>
+        <div class="absolute top-1/2 -right-1/4 w-[700px] h-[700px] neon-glow-cyan animate-pulse" style="animation-delay: 1s"></div>
+        <div class="absolute -bottom-1/4 left-1/3 w-[500px] h-[500px] neon-glow-magenta animate-pulse" style="animation-delay: 2s"></div>
     </div>
+   
+    <nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-gutter py-8 bg-transparent">
+        <div class="flex items-center gap-2">
+            <span class="font-headline-lg text-headline-lg font-bold text-primary tracking-tighter">AURA</span>
+        </div>
+        <div class="hidden md:flex items-center space-x-8">
+            <a class="text-on-surface-variant font-label-bold text-label-bold hover:text-secondary transition-colors duration-300" href="#">KEŞFET</a>
+            <a class="text-on-surface-variant font-label-bold text-label-bold hover:text-secondary transition-colors duration-300" href="#">STÜDYO</a>
+            <a class="text-primary font-label-bold text-label-bold" href="#">GİRİŞ YAP</a>
+        </div>
+    </nav>
+  
+    <main class="relative z-10 min-h-screen flex items-center justify-center p-gutter">
+        
+        <div class="w-full max-w-[440px] glass-card rounded-xl p-stack-lg flex flex-col items-center">
+
+            <form asp-controller="Auth" asp-action="Login" class="w-full space-y-stack-sm" method="post">
+              
+                <div class="group">
+                    <label class="block font-label-bold text-label-bold text-secondary-fixed-dim mb-2 uppercase tracking-widest" for="email">KULLANICI ADI</label>
+                    <div class="relative flex items-center input-glow bg-surface-container-lowest rounded-lg border border-outline-variant transition-all duration-300">
+                        <span class="material-symbols-outlined absolute left-3 text-outline">person</span>
+                        <input asp-for="@Model.UserName" class="w-full bg-transparent border-none focus:ring-0 text-on-surface placeholder:text-outline py-3 pl-10 pr-4 font-body-md text-body-md rounded-lg"  type="text">
+                    </div>
+                </div>
+                <!-- Password Field -->
+                <div class="group">
+                    <div class="flex justify-between items-end mb-2">
+                        <label class="block font-label-bold text-label-bold text-secondary-fixed-dim uppercase tracking-widest" for="password">ŞİFRE</label>
+
+                    </div>
+                    <div class="relative flex items-center input-glow bg-surface-container-lowest rounded-lg border border-outline-variant transition-all duration-300">
+                        <span class="material-symbols-outlined absolute left-3 text-outline">lock</span>
+                        <input asp-for="@Model.Password" class="w-full bg-transparent border-none focus:ring-0 text-on-surface placeholder:text-outline py-3 pl-10 pr-12 font-body-md text-body-md rounded-lg" id="password" placeholder="••••••••" type="password">
+                        <button class="absolute right-3 flex items-center justify-center p-1 text-outline hover:text-on-surface transition-colors" onclick="togglePassword()" type="button">
+                            <span class="material-symbols-outlined" id="password-toggle-icon">visibility</span>
+                        </button>
+                    </div>
+                </div>
+              
+                <span class="text-danger">@Html.ValidationSummary(excludePropertyErrors: true)</span>
+                <button class="w-full mt-stack-md py-4 rounded-lg btn-gradient text-on-primary font-label-bold text-label-bold uppercase tracking-widest flex items-center justify-center gap-2" type="submit">
+                    GİRİŞ YAP
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'wght' 600">arrow_forward</span>
+                </button>
+            </form>
+          
+        </div>
+    </main>
+    <!-- Footer Shell -->
+    <footer class="fixed bottom-0 w-full flex flex-col md:flex-row justify-between items-center px-gutter py-stack-sm text-center md:text-left bg-transparent z-10">
+        <span class="font-body-md text-body-md text-outline">© Tüm hakları saklıdır.</span>
+        <div class="flex gap-stack-md mt-2 md:mt-0">
+            <a class="text-outline hover:text-secondary-fixed transition-colors duration-200 font-body-md text-body-md" href="#">Gizlilik Politikası</a>
+            <a class="text-outline hover:text-secondary-fixed transition-colors duration-200 font-body-md text-body-md" href="#">Hizmet Şartları</a>
+            <a class="text-outline hover:text-secondary-fixed transition-colors duration-200 font-body-md text-body-md" href="#">Destekle İletişime Geç</a>
+        </div>
+    </footer>
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const icon = document.getElementById('password-toggle-icon');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.textContent = 'visibility_off';
+            } else {
+                passwordInput.type = 'password';
+                icon.textContent = 'visibility';
+            }
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            const glows = document.querySelectorAll('.neon-glow-purple, .neon-glow-cyan, .neon-glow-magenta');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+
+            glows.forEach((glow, index) => {
+                const speed = (index + 1) * 20;
+                const xShift = (x - 0.5) * speed;
+                const yShift = (y - 0.5) * speed;
+                glow.style.transform = `translate(${xShift}px, ${yShift}px)`;
+            });
+        });
+    </script>
 
 
 </body>
 </html>
+
+
+
+
+
+

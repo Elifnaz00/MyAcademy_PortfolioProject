@@ -9,14 +9,19 @@ namespace Portfolio.Controllers
     {
         private readonly AppDbContext _appDbContext;
 
-
-        public IActionResult Index()
+        public TestimonialController(AppDbContext appDbContext)
         {
-            var testimonials = _appDbContext.Testimonials.AsNoTracking().ToList();
-            return View(testimonials);
-           
+            _appDbContext = appDbContext;
         }
 
+        public async Task<IActionResult> Index()
+        {
+            var testimonials = await _appDbContext.Testimonials
+                .AsNoTracking()
+                .ToListAsync();
+
+            return View(testimonials);
+        }
 
         [HttpGet]
         public IActionResult CreateTestimonial()
@@ -24,47 +29,81 @@ namespace Portfolio.Controllers
             return View();
         }
 
-
-
         [HttpPost]
-        public IActionResult CreateTestimonial(Testimonial testimonial)
+        public async Task<IActionResult> CreateTestimonial(Testimonial testimonial)
         {
-            _appDbContext.Testimonials.Add(testimonial);
-            _appDbContext.SaveChanges();
-            return RedirectToAction("Index");
+            if (!ModelState.IsValid)
+            {
+                return View(testimonial);
+            }
 
-            
+            try
+            {
+                await _appDbContext.Testimonials.AddAsync(testimonial);
+                await _appDbContext.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Kayıt oluşturulurken bir hata oluştu.");
+                return View(testimonial);
+            }
         }
 
-
         [HttpGet]
-        public IActionResult UpdateTestimonial(int id)
+        public async Task<IActionResult> UpdateTestimonial(int id)
         {
-            var testimonial = _appDbContext.Testimonials.Find(id);
+            var testimonial = await _appDbContext.Testimonials.FindAsync(id);
+
+            if (testimonial is null)
+                return NotFound();
+
             return View(testimonial);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> UpdateTestimonial(Testimonial testimonial)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(testimonial);
+            }
 
+            try
+            {
+                _appDbContext.Testimonials.Update(testimonial);
+                await _appDbContext.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Güncelleme sırasında hata oluştu.");
+                return View(testimonial);
+            }
+        }
 
         [HttpPost]
-        public IActionResult UpdateTestimonial(Testimonial testimonial)
+        public async Task<IActionResult> DeleteTestimonial(int id)
         {
-            _appDbContext.Testimonials.Update(testimonial);
-            _appDbContext.SaveChanges();
-            return RedirectToAction("Index");
-            
+            var testimonial = await _appDbContext.Testimonials.FindAsync(id);
+
+            if (testimonial is null)
+                return NotFound();
+
+            try
+            {
+                _appDbContext.Testimonials.Remove(testimonial);
+                await _appDbContext.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Silme sırasında hata oluştu.");
+                return View(testimonial);
+            }
         }
-
-        [HttpGet]
-        public IActionResult DeleteTestimonial(int id)
-        {
-            var testimonial= _appDbContext.Testimonials.Find(id);
-            _appDbContext.Testimonials.Remove(testimonial);
-            _appDbContext.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-
-
     }
 }

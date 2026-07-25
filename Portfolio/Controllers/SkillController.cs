@@ -9,11 +9,18 @@ namespace Portfolio.Controllers
     {
         private readonly AppDbContext _appDbContext;
 
-        public IActionResult Index()
+        public SkillController(AppDbContext appDbContext)
         {
-            var skills = _appDbContext.Skills.AsNoTracking().ToList();
+            _appDbContext = appDbContext;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var skills = await _appDbContext.Skills
+                .AsNoTracking()
+                .ToListAsync();
+
             return View(skills);
-            
         }
 
 
@@ -24,44 +31,84 @@ namespace Portfolio.Controllers
         }
 
 
-
         [HttpPost]
-        public IActionResult CreateSkill(Skill skill)
+        public async Task<IActionResult> CreateSkill(Skill skill)
         {
-            _appDbContext.Skills.Add(skill);
-            _appDbContext.SaveChanges();
-            return RedirectToAction("Index");
-            
+            if (!ModelState.IsValid)
+            {
+                return View(skill);
+            }
+
+            try
+            {
+                await _appDbContext.Skills.AddAsync(skill);
+                await _appDbContext.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Kayıt oluşturulurken bir hata oluştu.");
+                return View(skill);
+            }
         }
 
 
         [HttpGet]
-        public IActionResult UpdateSkill(int id)
+        public async Task<IActionResult> UpdateSkill(int id)
         {
-            var skill = _appDbContext.Skills.Find(id);
+            var skill = await _appDbContext.Skills.FindAsync(id);
+
+            if (skill is null)
+                return NotFound();
+
             return View(skill);
         }
 
 
-
         [HttpPost]
-        public IActionResult UpdateSkill(Skill skill)
+        public async Task<IActionResult> UpdateSkill(Skill skill)
         {
-            _appDbContext.Skills.Update(skill);
-            _appDbContext.SaveChanges();
-            return RedirectToAction("Index");
-           
+            if (!ModelState.IsValid)
+            {
+                return View(skill);
+            }
+
+            try
+            {
+                _appDbContext.Skills.Update(skill);
+                await _appDbContext.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Güncelleme sırasında hata oluştu.");
+                return View(skill);
+            }
         }
 
+
         [HttpPost]
-        public IActionResult DeleteSkill(int id)
+        public async Task<IActionResult> DeleteSkill(int id)
         {
-            var skill = _appDbContext.Skills.Find(id);
-            _appDbContext.Skills.Remove(skill);
-            _appDbContext.SaveChanges();
-            return View();
+            var skill = await _appDbContext.Skills.FindAsync(id);
+
+            if (skill is null)
+                return NotFound();
+
+            try
+            {
+                _appDbContext.Skills.Remove(skill);
+                await _appDbContext.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Silme sırasında hata oluştu.");
+                return View(skill);
+            }
         }
-
-
     }
 }

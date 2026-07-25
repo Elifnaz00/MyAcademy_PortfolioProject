@@ -1,5 +1,4 @@
-﻿using AspNetCoreGeneratedDocument;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Data.Context;
@@ -11,74 +10,176 @@ namespace Portfolio.Controllers
     {
         private readonly AppDbContext _appDbContext;
 
-
-        [HttpGet]
-        public IActionResult Index()
+        public SkillItemController(AppDbContext appDbContext)
         {
-            var skilItems = _appDbContext.SkillItems.AsNoTracking().ToList();
-            return View(skilItems);
+            _appDbContext = appDbContext;
         }
 
 
         [HttpGet]
-        public IActionResult CreateSkillItem()
+        public async Task<IActionResult> Index()
         {
-            var skillsList= _appDbContext.Skills.AsNoTracking().ToList();
-            ViewBag.Skills = (from skill in skillsList
-                              select new SelectListItem
-            {
-                Value= skill.Id.ToString(),
-                Text= skill.Name,   
-            }).ToList();
-            return View();
-        }
+            var skillItems = await _appDbContext.SkillItems
+                .AsNoTracking()
+                .ToListAsync();
 
-
-
-        [HttpPost]
-        public IActionResult CreateSkillItem(SkillItem skillItems)
-        {
-            _appDbContext.SkillItems.Add(skillItems);
-            _appDbContext.SaveChanges();
-            return RedirectToAction("Index");
-
+            return View(skillItems);
         }
 
 
         [HttpGet]
-        public IActionResult UpdateSkillItem(int id)
+        public async Task<IActionResult> CreateSkillItem()
         {
-            var skillsList = _appDbContext.Skills.AsNoTracking().ToList();
+            var skillsList = await _appDbContext.Skills
+                .AsNoTracking()
+                .ToListAsync();
+
             ViewBag.Skills = (from skill in skillsList
                               select new SelectListItem
                               {
                                   Value = skill.Id.ToString(),
                                   Text = skill.Name,
                               }).ToList();
-            var skillItem = _appDbContext.SkillItems.Find(id);
-            return View(skillItem);
-        }
 
-
-
-        [HttpPost]
-        public IActionResult UpdateSkillItem(SkillItem skillItem)
-        {
-            _appDbContext.SkillItems.Update(skillItem);
-            _appDbContext.SaveChanges();
-            return RedirectToAction("Index");
-
-        }
-
-        [HttpPost]
-        public IActionResult DeleteSkillItem(int id)
-        {
-            var skillItem = _appDbContext.SkillItems.Find(id);
-            skillItem.IsActive= false;
-            _appDbContext.SaveChanges();
             return View();
         }
 
 
+        [HttpPost]
+        public async Task<IActionResult> CreateSkillItem(SkillItem skillItem)
+        {
+            if (!ModelState.IsValid)
+            {
+                var skillsList = await _appDbContext.Skills
+                    .AsNoTracking()
+                    .ToListAsync();
+
+                ViewBag.Skills = (from skill in skillsList
+                                  select new SelectListItem
+                                  {
+                                      Value = skill.Id.ToString(),
+                                      Text = skill.Name,
+                                  }).ToList();
+
+                return View(skillItem);
+            }
+
+            try
+            {
+                await _appDbContext.SkillItems.AddAsync(skillItem);
+                await _appDbContext.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Kayıt oluşturulurken bir hata oluştu.");
+
+                var skillsList = await _appDbContext.Skills
+                    .AsNoTracking()
+                    .ToListAsync();
+
+                ViewBag.Skills = (from skill in skillsList
+                                  select new SelectListItem
+                                  {
+                                      Value = skill.Id.ToString(),
+                                      Text = skill.Name,
+                                  }).ToList();
+
+                return View(skillItem);
+            }
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> UpdateSkillItem(int id)
+        {
+            var skillsList = await _appDbContext.Skills
+                .AsNoTracking()
+                .ToListAsync();
+
+            ViewBag.Skills = (from skill in skillsList
+                              select new SelectListItem
+                              {
+                                  Value = skill.Id.ToString(),
+                                  Text = skill.Name,
+                              }).ToList();
+
+            var skillItem = await _appDbContext.SkillItems.FindAsync(id);
+
+            if (skillItem is null)
+                return NotFound();
+
+            return View(skillItem);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateSkillItem(SkillItem skillItem)
+        {
+            if (!ModelState.IsValid)
+            {
+                var skillsList = await _appDbContext.Skills
+                    .AsNoTracking()
+                    .ToListAsync();
+
+                ViewBag.Skills = (from skill in skillsList
+                                  select new SelectListItem
+                                  {
+                                      Value = skill.Id.ToString(),
+                                      Text = skill.Name,
+                                  }).ToList();
+
+                return View(skillItem);
+            }
+
+            try
+            {
+                _appDbContext.SkillItems.Update(skillItem);
+                await _appDbContext.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Güncelleme sırasında hata oluştu.");
+
+                var skillsList = await _appDbContext.Skills
+                    .AsNoTracking()
+                    .ToListAsync();
+
+                ViewBag.Skills = (from skill in skillsList
+                                  select new SelectListItem
+                                  {
+                                      Value = skill.Id.ToString(),
+                                      Text = skill.Name,
+                                  }).ToList();
+
+                return View(skillItem);
+            }
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteSkillItem(int id)
+        {
+            var skillItem = await _appDbContext.SkillItems.FindAsync(id);
+
+            if (skillItem is null)
+                return NotFound();
+
+            try
+            {
+                skillItem.IsActive = false;
+                await _appDbContext.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Silme sırasında hata oluştu.");
+                return View(skillItem);
+            }
+        }
     }
 }

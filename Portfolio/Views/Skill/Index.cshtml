@@ -36,6 +36,16 @@
                         {
                             <tr class="hover:bg-surface-container-lowest/50 transition-colors">
                                 <td class="px-lg py-md text-on-surface-variant">@item.Name</td>
+                                <td>
+                                    @if (item.IsActive)
+                                    {
+                                        <span class="badge-active"><i class="bi bi-check-circle-fill me-1"></i>Aktif</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge-passive"><i class="bi bi-x-circle-fill me-1"></i>Pasif</span>
+                                    }
+                                </td>
                                 <td class="px-lg py-md text-right">
                                     <div class="flex justify-end gap-sm">
                                         <a href="/Skill/UpdateSkill/@item.Id" class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-md transition-all">

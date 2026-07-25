@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Portfolio.Data.Context;
 using Portfolio.Data.Entities;
 
@@ -14,28 +15,47 @@ namespace Portfolio.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var banner= _context.Banners.FirstOrDefault();
+            var banner= await _context.Banners.FirstOrDefaultAsync();
+            if(banner is null)
+                return NotFound();
+
             return View(banner);
         }
 
 
         [HttpGet]
-        public IActionResult UpdateBanner(int id)
+        public async Task<IActionResult> UpdateBanner(int id)
         {
-            var banner= _context.Banners.Find(id);
+            var banner= await _context.Banners.FindAsync(id);
+            if(banner is null)
+                return NotFound();
+
             return View(banner);
         }
 
 
 
         [HttpPost]
-        public IActionResult UpdateBanner(Banner banner)
+        public async Task<IActionResult> UpdateBanner(Banner banner)
         {
-            _context.Banners.Update(banner);
-            _context.SaveChanges();
-            return RedirectToAction("Index");
+            if (!ModelState.IsValid) { 
+                return View(banner);
+            }
+
+            try
+            {
+                _context.Banners.Update(banner);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Kayıt güncellenirken bir hata oluştu.");
+                return View(banner);
+            }
+           
         }
 
     }

@@ -10,9 +10,12 @@ namespace Portfolio.Controllers
     {
         private readonly AppDbContext _context;
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var contactInfo = _context.ContactInfos.FirstOrDefault();
+            var contactInfo = await _context.ContactInfos.FirstOrDefaultAsync();
+            if(contactInfo is null)
+                return NotFound();
+
             return View(contactInfo);
         }
 
@@ -26,37 +29,76 @@ namespace Portfolio.Controllers
 
 
         [HttpPost]
-        public IActionResult CreateContactInfo(ContactInfo ContactInfo)
+        public async Task<IActionResult> CreateContactInfo(ContactInfo ContactInfo)
         {
-            _context.ContactInfos.Add(ContactInfo);
-            _context.SaveChanges();
-            return RedirectToAction("Index");
+            if (!ModelState.IsValid)
+                return View();
+            try
+            {
+                _context.ContactInfos.Add(ContactInfo);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Kayıt oluşturulurken bir hata oluştu.");
+                return View(ContactInfo);
+            }
+          
         }
 
 
         [HttpGet]
-        public IActionResult UpdateContactInfo(int id)
+        public async Task<IActionResult> UpdateContactInfo(int id)
         {
-            var contactInfo = _context.ContactInfos.Find(id);
+            var contactInfo = await _context.ContactInfos.FindAsync(id);
+            if (contactInfo is null)
+                return NotFound();
+
             return View(contactInfo);
         }
 
 
 
         [HttpPost]
-        public IActionResult UpdateContactInfo(ContactInfo contactInfo)
+        public async Task<IActionResult> UpdateContactInfo(ContactInfo contactInfo)
         {
-            _context.ContactInfos.Update(contactInfo);
-            _context.SaveChanges();
-            return RedirectToAction("Index");
+            if (!ModelState.IsValid)
+                return View();
+            try
+            {
+                _context.ContactInfos.Update(contactInfo);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Güncelleme sırasında hata oluştu.");
+                return View(contactInfo);
+            }
+           
         }
 
+
+
         [HttpGet]
-        public IActionResult DeleteContactInfo(int id) {
+        public async Task<IActionResult> DeleteContactInfo(int id) {
             var contactInfo= _context.ContactInfos.Find();
-            _context.ContactInfos.Remove(contactInfo);
-            _context.SaveChanges();
-            return RedirectToAction("Index");
+            if (contactInfo is null)
+                return NotFound();
+
+            try
+            {
+                _context.ContactInfos.Remove(contactInfo);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Silme sırasında hata oluştu.");
+                return View();
+            }
+
         }
 
     }

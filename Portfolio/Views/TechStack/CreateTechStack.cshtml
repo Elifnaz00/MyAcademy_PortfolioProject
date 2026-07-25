@@ -1,0 +1,17 @@
+﻿@model TechStack
+@{
+    ViewData["Title"] = "CreateTechStack";
+    Layout = "~/Views/AdminLayout/Layout.cshtml";
+}
+
+
+<form method="post" asp-action="CreateTechStack" asp-controller="TechStacks">
+    <label> Yetenek Kategori Adı</label>
+    <input type="text" asp-for="Name" class="form-control" required>
+    <br />
+    <br />
+  
+    <br />
+    <button class="btn btn-outline-dark">Kaydet</button>
+</form>
+
