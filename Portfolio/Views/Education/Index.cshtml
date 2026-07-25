@@ -1,4 +1,4 @@
-﻿@model Education
+﻿@model List<Education>
 @{
   
     Layout = "~/Views/AdminLayout/Layout.cshtml";
@@ -16,34 +16,38 @@
 
                             <th class="px-lg py-md font-label-sm uppercase tracking-wider">Okul Adı</th>
                             <th class="px-lg py-md font-label-sm uppercase tracking-wider">Bölüm Adı</th>
-                            <th class="px-lg py-md font-label-sm uppercase tracking-wider text-right">Açıklama</th>
-                            <th class="px-lg py-md font-label-sm uppercase tracking-wider text-right">GPA</th>
-                            <th class="px-lg py-md font-label-sm uppercase tracking-wider text-right">Başlama Tarihi</th>
-                            <th class="px-lg py-md font-label-sm uppercase tracking-wider text-right">Bitiş Tarihi</th>
+                            <th class="px-lg py-md font-label-sm uppercase tracking-wider ">Açıklama</th>
+                            <th class="px-lg py-md font-label-sm uppercase tracking-wider ">GPA</th>
+                            <th class="px-lg py-md font-label-sm uppercase tracking-wider ">Başlama Tarihi</th>
+                            <th class="px-lg py-md font-label-sm uppercase tracking-wider ">Bitiş Tarihi</th>
                             <th class="px-lg py-md font-label-sm uppercase tracking-wider text-right">İşlemler</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-outline-variant/30">
-                        <tr class="hover:bg-surface-container-lowest/50 transition-colors">
-                            <td class="px-lg py-md text-on-surface-variant">@Model.SchoolName</td>
-                            <td class="px-lg py-md text-on-surface-variant">@Model.Department</td>
-                            <td class="px-lg py-md text-on-surface-variant">@Model.Description</td>
-                            <td class="px-lg py-md text-on-surface-variant">@Model.GPA</td>
-                            <td class="px-lg py-md text-on-surface-variant">@Model.StartYear</td>
-                            <td class="px-lg py-md text-on-surface-variant">@Model.GraduationYear</td>
+                        @foreach(var item in Model)
+                        {
+                            <tr class="hover:bg-surface-container-lowest/50 transition-colors">
+                                <td class="px-lg py-md text-on-surface-variant">@item.SchoolName</td>
+                                <td class="px-lg py-md text-on-surface-variant">@item.Department</td>
+                                <td class="px-lg py-md text-on-surface-variant">@item.Description</td>
+                                <td class="px-lg py-md text-on-surface-variant">@item.GPA</td>
+                                <td class="px-lg py-md text-on-surface-variant">@item.StartYear</td>
+                                <td class="px-lg py-md text-on-surface-variant">@item.GraduationYear</td>
 
 
-                            <td class="px-lg py-md text-right">
-                                <div class="flex justify-end gap-sm">
-                                    <a href="/Education/UpdateEducation/@Model.Id" class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-md transition-all">
-                                        <span class="material-symbols-outlined text-[20px]">edit</span>
-                                    </a>
-                                    <a href="/Education/DeleteEducation/@Model.Id" onclick="return confirm('Silmek İstediğinize Emin Misiniz?')" class="p-1.5 text-on-surface-variant hover:text-error hover:bg-error-container/20 rounded-md transition-all">
-                                        <span class="material-symbols-outlined text-[20px]">delete</span>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
+                                <td class="px-lg py-md text-right">
+                                    <div class="flex justify-end gap-sm">
+                                        <a href="/Education/UpdateEducation/@item.Id" class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-md transition-all">
+                                            <span class="material-symbols-outlined text-[20px]">edit</span>
+                                        </a>
+                                        <a href="/Education/DeleteEducation/@item.Id" onclick="return confirm('Silmek İstediğinize Emin Misiniz?')" class="p-1.5 text-on-surface-variant hover:text-error hover:bg-error-container/20 rounded-md transition-all">
+                                            <span class="material-symbols-outlined text-[20px]">delete</span>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                        
 
                     </tbody>
                 </table>
@@ -63,6 +67,14 @@
                 </div>
             </div>
         </div>
+        <br />
+        <br />
+
+        <a href="/Education/CreateEducation" class="btn btn-outline-dark">
+
+            Eğitim Geçmişi Ekle
+
+        </a>
     }
     else
     {
@@ -71,7 +83,7 @@
 
         <a href="/Education/CreateEducation" class="btn btn-outline-dark">
 
-            İletişim Bilgisi Ekle
+            Eğitim Geçmişi Ekle
 
         </a>
     }

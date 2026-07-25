@@ -14,9 +14,12 @@ namespace Portfolio.ViewComponents.Default_Index
             _context = context;
         }
 
-        public IViewComponentResult Invoke()
+        public async Task<IViewComponentResult> InvokeAsync()
         {
-            var projectStackDetailsVm= _context.ProjectTechStacks.Include(x=> x.TechStack).Include(x=> x.Project).GroupBy(x => new { x.ProjectId, x.Project.Name, x.Project.ImageUrl, x.Project.Description, x.Project.GithubUrl })
+            var projectStackDetailsVm= await _context.ProjectTechStacks
+                .AsNoTracking()
+                .Include(x=> x.TechStack).Include(x=> x.Project)
+                .GroupBy(x => new { x.ProjectId, x.Project.Name, x.Project.ImageUrl, x.Project.Description, x.Project.GithubUrl })
                 .Select(g => new ProjectStackDetailsViewModel
                 {
                     ProjectId = g.Key.ProjectId,
@@ -25,7 +28,8 @@ namespace Portfolio.ViewComponents.Default_Index
                     Description = g.Key.Description,
                     GithubUrl = g.Key.GithubUrl,
                     TechStackNames = g.Select(x => x.TechStack.Name).ToList()
-                }).ToList();
+                })
+                .ToListAsync();
 
             return View(projectStackDetailsVm);
         }

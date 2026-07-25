@@ -13,10 +13,10 @@ namespace Portfolio.ViewComponents.AdminDashboard
             _appDbContext = appDbContext;
         }
 
-        public IViewComponentResult Invoke()
+        public async Task<IViewComponentResult> InvokeAsync()
         {
 
-            var recenetProjectList=   _appDbContext.ProjectTechStacks
+            var recenetProjectList=  await _appDbContext.ProjectTechStacks
                .Include(x => x.Project)
                .Include(x => x.TechStack)
                .GroupBy(x => new { x.ProjectId, x.Project.Name })
@@ -28,7 +28,7 @@ namespace Portfolio.ViewComponents.AdminDashboard
                })
                .OrderByDescending(x => x.CreatedAt)
                .Take(5)
-               .ToList();
+               .ToListAsync();
 
           
             return View(recenetProjectList);

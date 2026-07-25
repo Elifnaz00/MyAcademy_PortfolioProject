@@ -7,6 +7,7 @@
         public string ImageUrl { get; set; }
         public string Description { get; set; }
         public string GithubUrl { get; set; }
+        public DateTime CreatedAt { get; set; }
         public List<string> TechStackNames { get; set; }
     }
 }

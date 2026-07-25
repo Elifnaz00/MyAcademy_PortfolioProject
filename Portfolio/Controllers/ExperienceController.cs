@@ -18,7 +18,7 @@ namespace Portfolio.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var experience = await _context.Experiences.FirstOrDefaultAsync();
+            var experience = await _context.Experiences.AsNoTracking().ToListAsync();
 
             if (experience is null)
                 return NotFound();
@@ -87,7 +87,7 @@ namespace Portfolio.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> DeleteExperience(int id)
         {
             var experience = await _context.Experiences.FindAsync(id);

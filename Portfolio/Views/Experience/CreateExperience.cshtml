@@ -6,7 +6,7 @@
 }
 
 
-<form method="post">
+<form method="post" asp-action="CreateExperience" asp-controller="Experience">
     <label>Başlık</label>
     <input type="text" asp-for="Title" class="form-control" required>
     <br />
@@ -21,6 +21,7 @@
     <label>Başlangıç Tarihi</label>
     <input type="text" asp-for="StartYear" class="form-control">
     <br />
+    <label>Bitiş Tarihi</label>
     <input type="text" asp-for="EndYear" class="form-control">
     <br />
     <button type="submit" class="btn btn-outline-dark">Kaydet</button>

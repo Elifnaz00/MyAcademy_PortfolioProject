@@ -14,7 +14,7 @@ namespace Portfolio.Data.Entities
         public string ImageUrl { get; set; }
 
         [Required(ErrorMessage = "Proje Açıklaması boş bırakılamaz.")]
-        [MaxLength(100, ErrorMessage = "Proje Açıklaması en fazla 100 karakter olmalıdır.")]
+        [MaxLength(250, ErrorMessage = "Proje Açıklaması en fazla 250 karakter olmalıdır.")]
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Github Url boş bırakılamaz.")]
