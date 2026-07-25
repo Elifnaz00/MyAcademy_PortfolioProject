@@ -10,6 +10,11 @@ namespace Portfolio.Controllers
     {
         private readonly AppDbContext _context;
 
+        public ContactInfoController(AppDbContext context)
+        {
+            _context = context;
+        }
+
         public async Task<IActionResult> Index()
         {
             var contactInfo = await _context.ContactInfos.FirstOrDefaultAsync();

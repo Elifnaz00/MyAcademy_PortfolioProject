@@ -21,6 +21,7 @@ namespace Portfolio.Controllers
         {
             var skillItems = await _appDbContext.SkillItems
                 .AsNoTracking()
+                .Include(x=> x.Skill)
                 .ToListAsync();
 
             return View(skillItems);

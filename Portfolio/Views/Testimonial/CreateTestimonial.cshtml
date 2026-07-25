@@ -4,26 +4,32 @@
     Layout = "~/Views/AdminLayout/Layout.cshtml";
 }
 
-<form method="post">
-    <label>Yıldız</label>
-    <input type="text" asp-for="Rating" class="form-control" required>
+<form method="post" asp-action="CreateTestimonial" asp-controller="Testimonial">
+    <label>Önem Derecesi (Yanlızca 1-5 arasında olabilir)</label>
+    <input type="number" asp-for="Rating" class="form-control" required>
+    <span asp-validation-for="Rating" class="text-danger"></span>
     <br />
 
     <label>Yorum</label>
     <input type="text" asp-for="Comment" class="form-control" /></>
+    <span asp-validation-for="Comment" class="text-danger"></span>
     <br />
 
     <label>İsim</label>
     <input type="text" asp-for="FirstName" class="form-control" required>
+    
     <br />
     <label>Soy İsim</label>
     <input type="text" asp-for="LastName" class="form-control" required>
+   
     <br />
     <label>Başlık</label>
     <input type="text" asp-for="Title" class="form-control" required>
+   
     <br />
     <label>Baş Harfler</label>
     <input type="text" asp-for="Initials" class="form-control" required>
+    <span asp-validation-for="Initials" class="text-danger"></span>
     <br />
     <br />
     <button type="submit" class="btn btn-outline-dark">Kaydet</button>
