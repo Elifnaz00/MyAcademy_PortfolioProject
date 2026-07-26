@@ -22,11 +22,11 @@
             <td>@count</td>
             <td>@item.ProjectName</td>
            
-                <td>
-                    @foreach (var tech in item.TechStackNames)
-                        @string.Join("," , @tech)
+            <td>
+                   
+               @string.Join("," , item.TechStackNames)
                         
-                </td>
+            </td>
 			
         </tr>
     }

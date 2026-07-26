@@ -29,11 +29,11 @@
                             <td class="px-lg py-md">
                                 @item.ProjectName
                             </td>
-                            
-                            <td>
-                                @foreach (var tech in item.TechStackNames)
-                            @string.Join(",", @tech)
 
+                            <td class="px-lg py-md" >
+
+                                @string.Join(", ", item.TechStackNames)
+                                  
                                 </td>
                                 <td class="px-lg py-md text-on-surface-variant">@item.CreatedAt.ToString("dd.MM.yyyy")</td>
                             

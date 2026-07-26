@@ -14,15 +14,17 @@ namespace Portfolio.Controllers
             _appDbContext = appDbContext;
         }
 
+        
         public async Task<IActionResult> Index()
         {
+            /*
             var skills = await _appDbContext.Skills
                 .AsNoTracking()
                 .ToListAsync();
-
-            return View(skills);
+            */
+            return View();
         }
-
+        
 
         [HttpGet]
         public IActionResult CreateSkill()
@@ -89,7 +91,7 @@ namespace Portfolio.Controllers
         }
 
 
-        [HttpPost]
+       
         public async Task<IActionResult> DeleteSkill(int id)
         {
             var skill = await _appDbContext.Skills.FindAsync(id);

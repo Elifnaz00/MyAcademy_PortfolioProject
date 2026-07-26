@@ -15,19 +15,15 @@ namespace Portfolio.Controllers
             _appDbContext = appDbContext;
         }
 
-
+        
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var skillItems = await _appDbContext.SkillItems
-                .AsNoTracking()
-                .Include(x=> x.Skill)
-                .ToListAsync();
-
-            return View(skillItems);
+           
+            return View();
         }
 
-
+        
         [HttpGet]
         public async Task<IActionResult> CreateSkillItem()
         {
@@ -67,10 +63,11 @@ namespace Portfolio.Controllers
 
             try
             {
+                skillItem.IsActive = true;
                 await _appDbContext.SkillItems.AddAsync(skillItem);
                 await _appDbContext.SaveChangesAsync();
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index","Skill");
             }
             catch
             {
@@ -139,7 +136,7 @@ namespace Portfolio.Controllers
                 _appDbContext.SkillItems.Update(skillItem);
                 await _appDbContext.SaveChangesAsync();
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Skill");
             }
             catch
             {
@@ -161,7 +158,7 @@ namespace Portfolio.Controllers
         }
 
 
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> DeleteSkillItem(int id)
         {
             var skillItem = await _appDbContext.SkillItems.FindAsync(id);
@@ -174,7 +171,7 @@ namespace Portfolio.Controllers
                 skillItem.IsActive = false;
                 await _appDbContext.SaveChangesAsync();
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Skill");
             }
             catch
             {

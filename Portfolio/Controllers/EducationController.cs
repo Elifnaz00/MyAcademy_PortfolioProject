@@ -18,11 +18,11 @@ namespace Portfolio.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var education = await _appDbContext.Educations.FirstOrDefaultAsync();
-            if (education is null)
+            var educations = await _appDbContext.Educations.AsNoTracking().ToListAsync();
+            if (educations is null)
                 return NotFound();
 
-            return View(education);
+            return View(educations);
         }
 
 

@@ -7,6 +7,6 @@
         public bool IsActive { get; set; }
 
         public int SkillId { get; set; }
-        public Skill Skill { get; set; }
+        public Skill? Skill { get; set; }
     }
 }

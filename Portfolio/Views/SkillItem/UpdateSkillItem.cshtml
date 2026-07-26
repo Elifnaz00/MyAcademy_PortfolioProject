@@ -1,6 +1,6 @@
 ﻿@model SkillItem
 @{
-    ViewData["Title"] = "UpdateSkillItem";
+    
     Layout = "~/Views/AdminLayout/Layout.cshtml";
 }
 
@@ -13,6 +13,11 @@
     <label> Yetenek</label>
     <select class="form-control" asp-for="SkillId" asp-items="@ViewBag.Skills">
         <option selected disabled="">-- Tekonoloji Seçiniz --</option>
+    </select>
+    <select class="form-control" asp-for="IsActive">
+        <option>Aktif</option>
+        <option>Pasif</option>
+       
     </select>
     <br />
     <button type="submit" class="btn btn-outline-dark">Kaydet</button>

@@ -1,17 +1,17 @@
 ﻿@model SkillItem
 @{
-    ViewData["Title"] = "CreateSkillItem";
+    ViewData["Title"] = "Yetenek Ekle";
     Layout = "~/Views/AdminLayout/Layout.cshtml";
 }
 
 
-<form method="post">
+<form method="post" asp-controller="SkillItem" asp-action="CreateSkillItem">
     <label>Yetenek Adı</label>
     <input type="text" asp-for="Name" class="form-control" required>
     <br />
-    <label> Yetenek</label>
+    <label> Yetenek Kategorisi</label>
     <select class="form-control" asp-for="SkillId" asp-items="@ViewBag.Skills">
-        <option selected disabled="">-- Tekonoloji Seçiniz --</option>
+        <option selected disabled="">-- Kategori Seçiniz --</option>
     </select>
     <br />
     <button type="submit" class="btn btn-outline-dark">Kaydet</button>

@@ -6,7 +6,7 @@
         public int ProjectId { get; set; }
         public int TechStackId { get; set; }
 
-        public Project Project { get; set; }
-        public TechStack TechStack { get; set; }
+        public Project? Project { get; set; }
+        public TechStack? TechStack { get; set; }
     }
 }
